@@ -120,7 +120,12 @@ onMounted(fetchImages);
           <el-button type="primary" @click="$refs.folderInput.click()">上传文件夹</el-button>
 
           3D标注请选择：
-          <el-button type="primary" @click="$router.push('/papayaviewer')">上传3维图片</el-button>
+          <el-button
+              type="primary"
+              @click="() => $router.push('/papayaviewer')"
+          >
+            上传3维图片
+          </el-button>
         </div>
         <div class="gallery">
           <div v-for="(image, index) in imageList" :key="index" class="thumbnail">

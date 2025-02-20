@@ -1,14 +1,14 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import Images from "@/views/Images.vue";
 import Annotation from "@/views/Annotation.vue";
 import Login from "@/views/Login.vue";
 import Layout from "@/views/Layout.vue";
 import UserProfile from "@/views/user/UserProfile.vue";
 import UserPassword from "@/views/user/UserPassword.vue";
-import PapayaViewer from '@/components/PapayaViewer.vue';
+import PapayaViewer from "@/components/PapayaViewer.vue";
 // 定义路由关系
 const routes = [
-    { path: "/", redirect: "/login" },
+    {path: "/", redirect: "/login"},
     {
         path: "/login",
         name: "Login",
@@ -19,11 +19,11 @@ const routes = [
         name: "Layout",
         component: Layout,
         children: [
-            { path: "user/profile", component: UserProfile },
-            { path: "user/password", component: UserPassword },
+            {path: "user/profile", component: UserProfile},
+            {path: "user/password", component: UserPassword}
         ]
     },
-    { path: "/images", component: Images },
+    {path: "/images", component: Images},
     {
         path: "/annotation",
         name: "Annotation",
@@ -32,7 +32,7 @@ const routes = [
             imageId: route.query.imageId
         })
     },
-    { path: "/papayaviewer", component: PapayaViewer }
+    {path: "/papayaviewer", component: PapayaViewer}
 ];
 
 // 创建路由器
