@@ -5,7 +5,7 @@ import Login from "@/views/Login.vue";
 import Layout from "@/views/Layout.vue";
 import UserProfile from "@/views/user/UserProfile.vue";
 import UserPassword from "@/views/user/UserPassword.vue";
-
+import PapayaViewer from '@/components/PapayaViewer.vue';
 // 定义路由关系
 const routes = [
     { path: "/", redirect: "/login" },
@@ -31,7 +31,8 @@ const routes = [
         props: route => ({
             imageId: route.query.imageId
         })
-    }
+    },
+    { path: "/papayaviewer", component: PapayaViewer }
 ];
 
 // 创建路由器
