@@ -9,10 +9,8 @@ onMounted(() => {
 
 <template>
   <div class="papaya-container">
-    <iframe
-        src="/Papaya-master/tests/debug_local_Tools.html"
-        style="width: 100%; height: 100vh; border: none;"
-    ></iframe>
+    <iframe src="/public/Papaya-master/tests/debug_local_Tools.html"
+      style="width: 100%; height: 100vh; border: none;"></iframe>
   </div>
 </template>
 
