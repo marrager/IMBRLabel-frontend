@@ -50,7 +50,7 @@ papaya.ui.Toolbar.ICON_WORLDSPACE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEU
     "w2qeU92kHbzZRDvK2sBSfLDLtNUp/82rOj7nDm9tJi7lhoeWNzG7Pkqxz8R5p8ByhcGVd0CzkOOWv28KBJvNGa+V2/Y5U08vQm8mgvmTNyjpxHSF" +
     "Uj6/9rZPKerGSTuCPCi7qIdX3GXwEGAPFYt+/OgAXDAAAAAElFTkSuQmCC";
 
-papaya.ui.Toolbar.ICON_EXPAND =   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAE00lEQVR42u2d" +
+papaya.ui.Toolbar.ICON_EXPAND = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAE00lEQVR42u2d" +
     "jW3UQBCFJx3QAemAdJBQAVABTgekAqCC0EGOCoAKWDqADkIHKQGPfKdEh3Nr7493Z977pJWQwtk7+77ETs6zdyYEmrPWEyBtoQDgUABwKAA4FAAc" +
     "CgAOBQCHAoBDAcChAOBQAHAoADgUABwKAE6uALfjuGg094dx7Mbxo9H5D7wZxzCOF43O/3scN6kvzhXg5ziuGhV+4K20k0DD/964/jCO16kv9iCA" +
     "BvCu0bm/ySRgS4KAC7Abx3Wjc9/J9OO/JUGABXjYn/9Po/O/kimAVtd/EQMC6E1Krevkbhx/Kx17KSpBrcuAHjd2kx2kcwGUYRxfy60LBO9lEjxG" +
@@ -88,214 +88,231 @@ papaya.ui.Toolbar.ICON_COLLAPSE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
     "Slt0+kbYOuExiFuhng7JH2LFld0Ej2AeeCu6cF5cy3vs/XiDeAIWwS3Q298G8ZDoFuiBI7ACdKjegcZYSz2eBgjap1dAxafOkW9zyoUj7LnY/hCF" +
     "mNsByYQRzf9IR6L5XUKI/uXarHn/4Gvn/H5tQvqfi14rcXHzs6vPYh3RmT9N2ZHWxkYgt4/pN/LAOfka/AG9AAAAAElFTkSuQmCC";
 
-papaya.ui.Toolbar.FILE_MENU_DATA = {"label": "File", "icons": null,
+papaya.ui.Toolbar.FILE_MENU_DATA = {
+    "label": "文件", "icons": null,
     "items": [
-        {"label": "Add Image...", "action": "OpenImage", "type": "file", "hide": papaya.utilities.PlatformUtils.ios},
-        {"label": "Add Surface...", "action": "OpenSurface", "type": "file", "hide": papaya.utilities.PlatformUtils.ios},
-        {"label": "Add DICOM Folder...", "action": "OpenFolder", "type": "folder",
-            "hide": ((papaya.utilities.PlatformUtils.browser !== "Chrome") || ((typeof(daikon) === "undefined"))) },
-        {"label": "Add DTI Vector Series...", "action": "OpenDTI", "type": "file"},
-        {"type": "spacer"},
-        {"label": "Close All", "action": "CloseAllImages"}
+        { "label": "添加图像...", "action": "OpenImage", "type": "file", "hide": papaya.utilities.PlatformUtils.ios },
+        // { "label": "添加表面信息...", "action": "OpenSurface", "type": "file", "hide": papaya.utilities.PlatformUtils.ios },
+        {
+            "label": "添加DICOM文件夹...", "action": "OpenFolder", "type": "folder",
+            "hide": ((papaya.utilities.PlatformUtils.browser !== "Chrome") || ((typeof (daikon) === "undefined")))
+        },
+        // { "label": "Add DTI Vector Series...", "action": "OpenDTI", "type": "file" },
+        { "type": "spacer" },
+        { "label": "全部关闭", "action": "CloseAllImages" }
     ]
 };
 
-papaya.ui.Toolbar.RGB_FILE_MENU_DATA = {"label": "File", "icons": null,
+papaya.ui.Toolbar.RGB_FILE_MENU_DATA = {
+    "label": "文件", "icons": null,
     "items": [
-        {"label": "Close All", "action": "CloseAllImages"}
+        { "label": "全部关闭", "action": "CloseAllImages" }
     ]
 };
 
 papaya.ui.Toolbar.MENU_DATA = {
     "menus": [
         papaya.ui.Toolbar.FILE_MENU_DATA,
-        {"label": "View", "icons": null,
+        {
+            "label": "视图", "icons": null,
             "items": [
-                {"label": "Orientation", "action": "ShowOrientation", "type": "checkbox", "method": "isShowingOrientation"},
-                {"label": "Crosshairs", "action": "ShowCrosshairs", "type": "checkbox", "method": "isShowingCrosshairs"},
-                { "label": "Ruler", "action": "ShowRuler", "type": "checkbox", "method": "isShowingRuler" },
-                { "label": "Overlays", "action": "ShowOverlays", "type": "checkbox", "method": "isShowingOverlays" },
-                {"type": "spacer", "required": "hasSurface"},
-                {"label": "Surface Planes", "action": "ShowSurfacePlanes", "type": "checkbox", "method": "isShowingSurfacePlanes", "required" : "hasSurface"}
+                { "label": "定位", "action": "ShowOrientation", "type": "checkbox", "method": "isShowingOrientation" },
+                { "label": "十字准线", "action": "ShowCrosshairs", "type": "checkbox", "method": "isShowingCrosshairs" },
+                { "label": "尺子", "action": "ShowRuler", "type": "checkbox", "method": "isShowingRuler" },
+                { "label": "覆盖图", "action": "ShowOverlays", "type": "checkbox", "method": "isShowingOverlays" },
+                { "type": "spacer", "required": "hasSurface" },
+                { "label": "表面平面", "action": "ShowSurfacePlanes", "type": "checkbox", "method": "isShowingSurfacePlanes", "required": "hasSurface" }
             ]
         },
-        {"label": "Settings", "icons": null,
-            "items": [
-                {"label": "Viewer Preferences", "action": "Preferences"},
-                {"label": "Surface Preferences", "action": "SurfacePreferences", "required" : "hasSurface"}
-            ]
+        // {
+        //     "label": "Settings", "icons": null,
+        //     "items": [
+        //         { "label": "Viewer Preferences", "action": "Preferences" },
+        //         { "label": "Surface Preferences", "action": "SurfacePreferences", "required": "hasSurface" }
+        //     ]
+        // },
+        // {
+        //     "label": "Help", "icons": null,
+        //     "items": [
+        //         { "label": "Show Keyboard Reference", "action": "KeyboardRef" },
+        //         { "label": "Show Mouse Reference", "action": "MouseRef" },
+        //         { "label": "Show License", "action": "License" }
+        //     ]
+        // },
+        { "label": "TITLE", "icons": null, "titleBar": "true" },
+        {
+            "label": "EXPAND", "icons": [papaya.ui.Toolbar.ICON_EXPAND, papaya.ui.Toolbar.ICON_COLLAPSE], "items": [],
+            "method": "isCollapsable", "required": "isExpandable"
         },
-        {"label": "Help", "icons": null,
-            "items": [
-                {"label": "Show Keyboard Reference", "action": "KeyboardRef"},
-                {"label": "Show Mouse Reference", "action": "MouseRef"},
-                {"label": "Show License", "action": "License"}
-            ]
-        },
-        {"label": "TITLE", "icons": null, "titleBar": "true" },
-        {"label": "EXPAND", "icons": [papaya.ui.Toolbar.ICON_EXPAND, papaya.ui.Toolbar.ICON_COLLAPSE], "items": [],
-            "method": "isCollapsable", "required": "isExpandable" },
-        {"label": "SPACE", "icons": [papaya.ui.Toolbar.ICON_IMAGESPACE, papaya.ui.Toolbar.ICON_WORLDSPACE],
-            "items": [], "method": "isWorldMode", "menuOnHover": true }
+        {
+            "label": "SPACE", "icons": [papaya.ui.Toolbar.ICON_IMAGESPACE, papaya.ui.Toolbar.ICON_WORLDSPACE],
+            "items": [], "method": "isWorldMode", "menuOnHover": true
+        }
     ]
 };
 
 papaya.ui.Toolbar.MENU_DATA_KIOSK = {
     "menus": [
-        {"label": "EXPAND", "icons": [papaya.ui.Toolbar.ICON_EXPAND, papaya.ui.Toolbar.ICON_COLLAPSE], "items": [],
-            "method": "isCollapsable", "required": "isExpandable" }
+        {
+            "label": "EXPAND", "icons": [papaya.ui.Toolbar.ICON_EXPAND, papaya.ui.Toolbar.ICON_COLLAPSE], "items": [],
+            "method": "isCollapsable", "required": "isExpandable"
+        }
     ]
 };
 
 papaya.ui.Toolbar.OVERLAY_IMAGE_MENU_DATA = {
     "items": [
-        {"label": "Show Header", "action": "ShowHeader"},
-        {"label": "Show Image Info", "action": "ImageInfo"},
-        {"type": "spacer", "required": "isParametricCombined"},
-        {"label": "DisplayRange", "action": "ChangeRange", "type": "displayrange", "method": "getRange"},
-        {"label": "Load Negatives", "action": "LoadNegatives", "required" : "canCurrentOverlayLoadNegatives" },
-        {"label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha"},
-        {"label": "Color Table", "action": "ColorTable", "items": [], "required": "isNonParametricCombined" },
-        {"type": "spacer", "required": "isParametricCombined"},
-        {"label": "DisplayRange", "action": "ChangeRangeNeg", "type": "displayrange", "method": "getRangeNegative", "required": "isParametricCombined"},
-        {"label": "Transparency", "action": "alphaneg", "type": "range", "method": "getAlpha", "required": "isParametricCombined"},
-        {"type": "spacer", "required": "isParametricCombined"},
-        {"label": "Hide Overlay", "action": "ToggleOverlay", "method": "getHiddenLabel" },
-        {"label": "Close Overlay", "action": "CloseOverlay", "required": "isDesktopMode" },
-        {"label": "Open in Mango", "action": "OpenInMango", "required" : "canOpenInMango" }
+        { "label": "Show Header", "action": "ShowHeader" },
+        { "label": "Show Image Info", "action": "ImageInfo" },
+        { "type": "spacer", "required": "isParametricCombined" },
+        { "label": "DisplayRange", "action": "ChangeRange", "type": "displayrange", "method": "getRange" },
+        { "label": "Load Negatives", "action": "LoadNegatives", "required": "canCurrentOverlayLoadNegatives" },
+        { "label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha" },
+        { "label": "Color Table", "action": "ColorTable", "items": [], "required": "isNonParametricCombined" },
+        { "type": "spacer", "required": "isParametricCombined" },
+        { "label": "DisplayRange", "action": "ChangeRangeNeg", "type": "displayrange", "method": "getRangeNegative", "required": "isParametricCombined" },
+        { "label": "Transparency", "action": "alphaneg", "type": "range", "method": "getAlpha", "required": "isParametricCombined" },
+        { "type": "spacer", "required": "isParametricCombined" },
+        { "label": "Hide Overlay", "action": "ToggleOverlay", "method": "getHiddenLabel" },
+        { "label": "Close Overlay", "action": "CloseOverlay", "required": "isDesktopMode" },
+        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.BASE_IMAGE_MENU_DATA = {
     "items": [
-        {"label": "Show Header", "action": "ShowHeader"},
-        {"label": "Show Image Info", "action": "ImageInfo"},
-        {"label": "DisplayRange", "action": "ChangeRange", "type": "displayrange", "method": "getRange"},
-            papaya.ui.Toolbar.OVERLAY_IMAGE_MENU_DATA.items[6],
-        {"label": "Rotation", "action": "Rotation", "items": [
-            {"label": "About X Axis", "action": "rotationX", "type": "range", "method": "getRotationX"},
-            {"label": "About Y Axis", "action": "rotationY", "type": "range", "method": "getRotationY"},
-            {"label": "About Z Axis", "action": "rotationZ", "type": "range", "method": "getRotationZ"},
-            {"label": "Reset Transform", "action": "ResetTransform"},
-            {"label": "Rotate About Center", "action": "Rotate About Center", "type": "radiobutton", "method": "isRotatingAbout"},
-            {"label": "Rotate About Origin", "action": "Rotate About Origin", "type": "radiobutton", "method": "isRotatingAbout"},
-            {"label": "Rotate About Crosshairs", "action": "Rotate About Crosshairs", "type": "radiobutton", "method": "isRotatingAbout"}
-        ]},
-        {"label": "Open in Mango", "action": "OpenInMango", "required" : "canOpenInMango"  }
+        { "label": "Show Header", "action": "ShowHeader" },
+        { "label": "Show Image Info", "action": "ImageInfo" },
+        { "label": "DisplayRange", "action": "ChangeRange", "type": "displayrange", "method": "getRange" },
+        papaya.ui.Toolbar.OVERLAY_IMAGE_MENU_DATA.items[6],
+        {
+            "label": "Rotation", "action": "Rotation", "items": [
+                { "label": "About X Axis", "action": "rotationX", "type": "range", "method": "getRotationX" },
+                { "label": "About Y Axis", "action": "rotationY", "type": "range", "method": "getRotationY" },
+                { "label": "About Z Axis", "action": "rotationZ", "type": "range", "method": "getRotationZ" },
+                { "label": "Reset Transform", "action": "ResetTransform" },
+                { "label": "Rotate About Center", "action": "Rotate About Center", "type": "radiobutton", "method": "isRotatingAbout" },
+                { "label": "Rotate About Origin", "action": "Rotate About Origin", "type": "radiobutton", "method": "isRotatingAbout" },
+                { "label": "Rotate About Crosshairs", "action": "Rotate About Crosshairs", "type": "radiobutton", "method": "isRotatingAbout" }
+            ]
+        },
+        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.RGB_IMAGE_MENU_DATA = {
     "items": [
-        {"label": "Show Header", "action": "ShowHeader"},
-        {"label": "Show Image Info", "action": "ImageInfo"},
-        {"label": "Open in Mango", "action": "OpenInMango", "required" : "canOpenInMango"  }
+        { "label": "Show Header", "action": "ShowHeader" },
+        { "label": "Show Image Info", "action": "ImageInfo" },
+        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.SURFACE_MENU_DATA = {
     "items": [
-        {"label": "Show Surface Info", "action": "SurfaceInfo"},
-        {"label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha"}
+        { "label": "Show Surface Info", "action": "SurfaceInfo" },
+        { "label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha" }
     ]
 };
 
 papaya.ui.Toolbar.DTI_IMAGE_MENU_DATA = {
     "items": [
-        {"label": "Show Header", "action": "ShowHeader"},
-        {"label": "Show Image Info", "action": "ImageInfo"},
-        {"label": "Display Colors", "action": "DTI-RGB", "type": "checkbox", "method": "isDTIRGB"},
-        {"label": "Display Lines", "action": "DTI-Lines", "type": "checkbox", "method": "isDTILines"},
-        {"label": "Display Lines &amp; Colors", "action": "DTI-LinesColors", "type": "checkbox", "method": "isDTILinesAndRGB"},
-        {"label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha", "required": "canCurrentOverlayLoadMod"},
-        {"label": "Modulate with...", "action": "DTI-Mod", "type": "file", "hide": papaya.utilities.PlatformUtils.ios, "required": "canCurrentOverlayLoadMod"},
-        {"label": "Modulation", "action": "dtiAlphaFactor", "type": "range", "method": "getDtiAlphaFactor", "required": "canCurrentOverlayModulate"},
-        {"label": "Open in Mango", "action": "OpenInMango", "required" : "canOpenInMango"}
+        { "label": "Show Header", "action": "ShowHeader" },
+        { "label": "Show Image Info", "action": "ImageInfo" },
+        { "label": "Display Colors", "action": "DTI-RGB", "type": "checkbox", "method": "isDTIRGB" },
+        { "label": "Display Lines", "action": "DTI-Lines", "type": "checkbox", "method": "isDTILines" },
+        { "label": "Display Lines &amp; Colors", "action": "DTI-LinesColors", "type": "checkbox", "method": "isDTILinesAndRGB" },
+        { "label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha", "required": "canCurrentOverlayLoadMod" },
+        { "label": "Modulate with...", "action": "DTI-Mod", "type": "file", "hide": papaya.utilities.PlatformUtils.ios, "required": "canCurrentOverlayLoadMod" },
+        { "label": "Modulation", "action": "dtiAlphaFactor", "type": "range", "method": "getDtiAlphaFactor", "required": "canCurrentOverlayModulate" },
+        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.PREFERENCES_DATA = {
     "items": [
-        {"label": "Coordinate display of:", "field": "atlasLocks", "options": ["Mouse", "Crosshairs"]},
-        {"label": "Scroll wheel behavior:", "field": "scrollBehavior", "options": ["Zoom", "Increment Slice"],
-            "disabled": "container.disableScrollWheel"},
-        {"spacer": "true"},
-        {"label": "Smooth display:", "field": "smoothDisplay", "options": ["Yes", "No"]},
-        {"label": "Radiological display:", "field": "radiological", "options": ["Yes", "No"]}
+        { "label": "Coordinate display of:", "field": "atlasLocks", "options": ["Mouse", "Crosshairs"] },
+        {
+            "label": "Scroll wheel behavior:", "field": "scrollBehavior", "options": ["Zoom", "Increment Slice"],
+            "disabled": "container.disableScrollWheel"
+        },
+        { "spacer": "true" },
+        { "label": "Smooth display:", "field": "smoothDisplay", "options": ["Yes", "No"] },
+        { "label": "Radiological display:", "field": "radiological", "options": ["Yes", "No"] }
     ]
 };
 
 papaya.ui.Toolbar.PREFERENCES_SURFACE_DATA = {
     "items": [
-        {"label": "Background color:", "field": "surfaceBackgroundColor", "options": ["Black", "Dark Gray", "Gray", "Light Gray", "White"]}
+        { "label": "Background color:", "field": "surfaceBackgroundColor", "options": ["Black", "Dark Gray", "Gray", "Light Gray", "White"] }
     ]
 };
 
 papaya.ui.Toolbar.IMAGE_INFO_DATA = {
     "items": [
-        {"label": "Filename:", "field": "getFilename", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Image Dims:", "field": "getImageDimensionsDescription", "readonly": "true"},
-        {"label": "Voxel Dims:", "field": "getVoxelDimensionsDescription", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Byte Type:", "field": "getByteTypeDescription", "readonly": "true"},
-        {"label": "Byte Order:", "field": "getByteOrderDescription", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Orientation:", "field": "getOrientationDescription", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Notes:", "field": "getImageDescription", "readonly": "true"}
+        { "label": "Filename:", "field": "getFilename", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Image Dims:", "field": "getImageDimensionsDescription", "readonly": "true" },
+        { "label": "Voxel Dims:", "field": "getVoxelDimensionsDescription", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Byte Type:", "field": "getByteTypeDescription", "readonly": "true" },
+        { "label": "Byte Order:", "field": "getByteOrderDescription", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Orientation:", "field": "getOrientationDescription", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Notes:", "field": "getImageDescription", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.SERIES_INFO_DATA = {
     "items": [
-        {"label": "Filename:", "field": "getFilename", "readonly": "true"},
-        {"label": "File Length:", "field": "getFileLength", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Image Dims:", "field": "getImageDimensionsDescription", "readonly": "true"},
-        {"label": "Voxel Dims:", "field": "getVoxelDimensionsDescription", "readonly": "true"},
-        {"label": "Series Points:", "field": "getSeriesDimensionsDescription", "readonly": "true"},
-        {"label": "Series Point Size:", "field": "getSeriesSizeDescription", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Byte Type:", "field": "getByteTypeDescription", "readonly": "true"},
-        {"label": "Byte Order:", "field": "getByteOrderDescription", "readonly": "true"},
-        {"label": "Compressed:", "field": "getCompressedDescription", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Orientation:", "field": "getOrientationDescription", "readonly": "true"},
-        {"label": "Notes:", "field": "getImageDescription", "readonly": "true"}
+        { "label": "Filename:", "field": "getFilename", "readonly": "true" },
+        { "label": "File Length:", "field": "getFileLength", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Image Dims:", "field": "getImageDimensionsDescription", "readonly": "true" },
+        { "label": "Voxel Dims:", "field": "getVoxelDimensionsDescription", "readonly": "true" },
+        { "label": "Series Points:", "field": "getSeriesDimensionsDescription", "readonly": "true" },
+        { "label": "Series Point Size:", "field": "getSeriesSizeDescription", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Byte Type:", "field": "getByteTypeDescription", "readonly": "true" },
+        { "label": "Byte Order:", "field": "getByteOrderDescription", "readonly": "true" },
+        { "label": "Compressed:", "field": "getCompressedDescription", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Orientation:", "field": "getOrientationDescription", "readonly": "true" },
+        { "label": "Notes:", "field": "getImageDescription", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.SURFACE_INFO_DATA = {
     "items": [
-        {"label": "Filename:", "field": "getSurfaceFilename", "readonly": "true"},
-        {"spacer": "true"},
-        {"label": "Points:", "field": "getSurfaceNumPoints", "readonly": "true"},
-        {"label": "Triangles:", "field": "getSurfaceNumTriangles", "readonly": "true"}
+        { "label": "Filename:", "field": "getSurfaceFilename", "readonly": "true" },
+        { "spacer": "true" },
+        { "label": "Points:", "field": "getSurfaceNumPoints", "readonly": "true" },
+        { "label": "Triangles:", "field": "getSurfaceNumTriangles", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.HEADER_DATA = {
     "items": [
-        {"label": "", "field": "getHeaderDescription", "readonly": "true"}
+        { "label": "", "field": "getHeaderDescription", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.LICENSE_DATA = {
     "items": [
-        {"label": "", "field": "getLicense", "readonly": "true"}
+        { "label": "", "field": "getLicense", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.KEYBOARD_REF_DATA = {
     "items": [
-        {"label": "", "field": "getKeyboardReference", "readonly": "true"}
+        { "label": "", "field": "getKeyboardReference", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.MOUSE_REF_DATA = {
     "items": [
-        {"label": "", "field": "getMouseReference", "readonly": "true"}
+        { "label": "", "field": "getMouseReference", "readonly": "true" }
     ]
 };
 
@@ -360,9 +377,9 @@ papaya.ui.Toolbar.prototype.buildToolbar = function () {
 
     this.container.titlebarHtml = this.container.containerHtml.find("." + PAPAYA_TITLEBAR_CSS);
     if (this.container.getViewerDimensions()[0] < 600) {
-        this.container.titlebarHtml.css({visibility: "hidden"});
+        this.container.titlebarHtml.css({ visibility: "hidden" });
     } else {
-        this.container.titlebarHtml.css({visibility: "visible"});
+        this.container.titlebarHtml.css({ visibility: "visible" });
     }
 };
 
@@ -373,13 +390,17 @@ papaya.ui.Toolbar.prototype.buildAtlasMenu = function () {
         if (papaya.data.Atlas) {
             var items = this.spaceMenu.items;
 
-            items[0] = {"label": papaya.data.Atlas.labels.atlas.header.name, "action": "AtlasChanged-" +
-                papaya.data.Atlas.labels.atlas.header.name, "type": "radiobutton", "method": "isUsingAtlas"};
+            items[0] = {
+                "label": papaya.data.Atlas.labels.atlas.header.name, "action": "AtlasChanged-" +
+                    papaya.data.Atlas.labels.atlas.header.name, "type": "radiobutton", "method": "isUsingAtlas"
+            };
 
             if (papaya.data.Atlas.labels.atlas.header.transformedname) {
-                items[1] = {"label": papaya.data.Atlas.labels.atlas.header.transformedname, "action": "AtlasChanged-" +
-                    papaya.data.Atlas.labels.atlas.header.transformedname, "type": "radiobutton",
-                        "method": "isUsingAtlas"};
+                items[1] = {
+                    "label": papaya.data.Atlas.labels.atlas.header.transformedname, "action": "AtlasChanged-" +
+                        papaya.data.Atlas.labels.atlas.header.transformedname, "type": "radiobutton",
+                    "method": "isUsingAtlas"
+                };
             }
         }
     }
@@ -408,8 +429,10 @@ papaya.ui.Toolbar.prototype.buildColorMenuItems = function () {
     }
 
     for (ctr = 0; ctr < allColorTables.length; ctr += 1) {
-        item = {"label": allColorTables[ctr].name, "action": "ColorTable-" + allColorTables[ctr].name,
-            "type": "radiobutton", "method": "isUsingColorTable"};
+        item = {
+            "label": allColorTables[ctr].name, "action": "ColorTable-" + allColorTables[ctr].name,
+            "type": "radiobutton", "method": "isUsingColorTable"
+        };
         items[ctr] = item;
     }
 };
@@ -432,12 +455,12 @@ papaya.ui.Toolbar.prototype.buildOpenMenuItems = function (menuData) {
                 if (papayaLoadableImages[ctr].surface) {
                     menuItemName = "Add Surface " + papayaLoadableImages[ctr].nicename;
                     if (!this.menuContains(items, menuItemName)) {
-                        items.splice(2, 0, {"label": menuItemName, "action": "OpenSurface-" + papayaLoadableImages[ctr].name});
+                        items.splice(2, 0, { "label": menuItemName, "action": "OpenSurface-" + papayaLoadableImages[ctr].name });
                     }
                 } else {
                     menuItemName = "Add " + papayaLoadableImages[ctr].nicename;
                     if (!this.menuContains(items, menuItemName)) {
-                        items.splice(2, 0, {"label": menuItemName, "action": "Open-" + papayaLoadableImages[ctr].name});
+                        items.splice(2, 0, { "label": menuItemName, "action": "Open-" + papayaLoadableImages[ctr].name });
                     }
                 }
             }
@@ -505,7 +528,7 @@ papaya.ui.Toolbar.prototype.buildMenuItems = function (menu, itemData, topLevelB
 
     for (ctrItems = 0; ctrItems < itemData.length; ctrItems += 1) {
         if (!itemData[ctrItems].required || ((papaya.utilities.ObjectUtils.bind(this.container,
-                papaya.utilities.ObjectUtils.dereferenceIn(this.container,
+            papaya.utilities.ObjectUtils.dereferenceIn(this.container,
                 itemData[ctrItems].required)))(parseInt(modifier)) === true)) {
             if (itemData[ctrItems].type === "spacer") {
                 item = new papaya.ui.MenuItemSpacer();
@@ -524,8 +547,8 @@ papaya.ui.Toolbar.prototype.buildMenuItems = function (menu, itemData, topLevelB
                 }
             } else if (itemData[ctrItems].type === "folder") {
                 if ((!itemData[ctrItems].hide) && (!itemData[ctrItems].required || ((papaya.utilities.ObjectUtils.bind(this.container,
-                        papaya.utilities.ObjectUtils.dereferenceIn(this.container,
-                            itemData[ctrItems].required)))(parseInt(modifier)) === true))) {
+                    papaya.utilities.ObjectUtils.dereferenceIn(this.container,
+                        itemData[ctrItems].required)))(parseInt(modifier)) === true))) {
                     item = new papaya.ui.MenuItemFileChooser(this.viewer, itemData[ctrItems].label,
                         itemData[ctrItems].action, papaya.utilities.ObjectUtils.bind(this, this.doAction), true, modifier);
                 } else {
@@ -585,8 +608,8 @@ papaya.ui.Toolbar.prototype.doUpdateImageButtons = function () {
             dataUrl = screenVol.icon;
 
             data = {
-                "menus" : [
-                    {"label": "ImageButton", "icons": [dataUrl], "items": null, "imageButton": true}
+                "menus": [
+                    { "label": "ImageButton", "icons": [dataUrl], "items": null, "imageButton": true }
                 ]
             };
 
@@ -625,7 +648,7 @@ papaya.ui.Toolbar.prototype.updateSurfaceButtons = function () {
             var surf = this.viewer.surfaces[ctr];
 
             if (surf.staticIcon) {
-                var iconCb = function(dataUrl, index) {
+                var iconCb = function (dataUrl, index) {
                     that.surfaceMenus.push((that.buildMenu({
                         "label": "SurfaceButton",
                         "icons": [dataUrl],
@@ -762,12 +785,12 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
             dialog = new papaya.ui.Dialog(this.container, "Viewer Preferences", papaya.ui.Toolbar.PREFERENCES_DATA,
                 this.container.preferences, papaya.utilities.ObjectUtils.bind(this.container.preferences,
                     this.container.preferences.updatePreference),
-                    papaya.utilities.ObjectUtils.bind(this,
-                        function() {
-                            this.viewer.updateScreenSliceTransforms();
-                            this.viewer.drawViewer(false, true);
-                        }
-                    )
+                papaya.utilities.ObjectUtils.bind(this,
+                    function () {
+                        this.viewer.updateScreenSliceTransforms();
+                        this.viewer.drawViewer(false, true);
+                    }
+                )
             );
             dialog.showDialog();
         } else if (action === "SurfacePreferences") {
@@ -775,7 +798,7 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
                 this.container.preferences, papaya.utilities.ObjectUtils.bind(this.container.preferences,
                     this.container.preferences.updatePreference),
                 papaya.utilities.ObjectUtils.bind(this,
-                    function() {
+                    function () {
                         this.viewer.updateScreenSliceTransforms();
                         this.viewer.surfaceView.updatePreferences();
                         this.viewer.drawViewer(false, true);
@@ -846,7 +869,7 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
             this.closeAllMenus();
 
         }
-        
+
         else if (action.startsWith("ShowOrientation")) {
             if (this.container.preferences.showOrientation === "Yes") {
                 this.container.preferences.updatePreference("showOrientation", "No");
@@ -882,7 +905,7 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
                 if (this.container.viewer.screenVolumes[imageIndex].volume.urls[0]) {
                     papaya.utilities.PlatformUtils.launchCustomProtocol(this.container, papaya.utilities.UrlUtils.getAbsoluteUrl(PAPAYA_CUSTOM_PROTOCOL,
                         this.container.viewer.screenVolumes[imageIndex].volume.urls[0]) + "?" +
-                    encodeURIComponent("baseimage=" + this.container.viewer.volume.fileName + "&params=o"),
+                        encodeURIComponent("baseimage=" + this.container.viewer.volume.fileName + "&params=o"),
                         this.customProtocolResult);
                 }
             }
@@ -985,7 +1008,7 @@ papaya.ui.Toolbar.prototype.updateTitleBar = function (title) {
         elem.innerHTML = title;
     }
 
-    this.container.titlebarHtml.css({top: (0)});
+    this.container.titlebarHtml.css({ top: (0) });
 };
 
 

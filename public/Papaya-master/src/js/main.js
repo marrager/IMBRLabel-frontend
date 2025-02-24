@@ -332,15 +332,15 @@ papaya.Container.fillContainerHTML = function (containerHTML, isDefault, params,
             if (params.imageTools) {
                 containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_INCREMENT_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_INCREMENT_BUTTON_CSS + "'><span class='fas fa-plus'></span></button> ");
                 containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_DECREMENT_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_DECREMENT_BUTTON_CSS + "'><span class='fas fa-minus'></span></button> ");
-                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + "' title='Swap Views'><span class='fas fa-refresh'></span></button> ");
-                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + "' title='GoTo Center'><span class='fas fa-compress-alt'></span></button> ");
-                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + "' title='GoTo Origin'><span class='fas fa-expand-alt'></span></button> ");
+                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + "' title='切换视图'><span class='fas fa-refresh'></span></button> ");
+                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + "' title='转到中心'><span class='fas fa-compress-alt'></span></button> ");
+                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + "' title='转到原点'><span class='fas fa-expand-alt'></span></button> ");
             } else {
                 containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_INCREMENT_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_INCREMENT_BUTTON_CSS + "'>+</button> ");
                 containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_DECREMENT_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_DECREMENT_BUTTON_CSS + "'>-</button> ");
                 containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + "' title='Swap Views'>Swap View</button> ");
-                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + "' title='GoTo Center'>Goto Center</button> ");
-                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + "' title='GoTo Origin'>Goto Origin</button> ");
+                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + "' title='GoTo Center'>GoTo Center</button> ");
+                containerHTML.append("<button type='button' id='" + (PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + index) + "' class='" + PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + "' title='GoTo Origin'>GoTo Origin</button> ");
 
             }
             $("#" + PAPAYA_CONTROL_MAIN_INCREMENT_BUTTON_CSS + index).css({ display: "none" });
@@ -463,55 +463,56 @@ papaya.Container.buildContainer = function (containerHTML, params, replaceIndex)
 papaya.Container.CreateSideNevigation = function (containerHTML) {
 
     containerHTML.append('<div class="side-navbar"></div>');
-    containerHTML.append('<div class="side-navpanel" style="display:none">Cene Controls <hr/><button id="reverseCene" title="Reverse Cene"><span class="fas fa-backward fa-2x"></span></button><div><input class="input-range" orient="vertical" type="range" step="1" value="10" min="1" max="100"> <span class="range-value"></span></div><button id="repeatCene" style="background-color:green;" title="Repeat Cene"><span class="fas fa-refresh fa-2x"></span></button><hr/><label>Sync Cine</label><hr/><input type="checkbox" class="syncCine"></div>');
-    var rulerLineSize = "<div>Line Size : <select id='" + PAPAYA_RULER_LINE_WIDTH + "'><option value='1' selected=selected>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select></div>";
-    var rulerFontSize = "<div>Font Size : <select id='" + PAPAYA_RULER_FONT_SIZE + "'><option value='14' selected=selected>14</option><option value='16'>16</option><option value='18'>18</option><option value='20'>20</option><option value='25'>25</option></select></div>";
-    var rulerLengthSize = "<div>Length Unit : <select id='" + PAPAYA_RULER_LENGTH_UNIT + "'><option value='mm' selected=selected>Millimeters</option>" +
-        '<option value = "cm" > Centimeters</option >' +
-        '<option value="inches">Inches</option>' +
-        '<option value="feet">Feet</option>' +
-        '<option value="micrometer">Micrometers</option>' +
-        '<option value="meter">Meters</option>' +
-        '<option value="yd">Yards</option></select></div>';
+    containerHTML.append('<div class="side-navpanel" style="display:none">控制器 <hr/><button id="reverseCene" title="Reverse Cene"><span class="fas fa-backward fa-2x"></span></button><div><input class="input-range" orient="vertical" type="range" step="1" value="10" min="1" max="100"> <span class="range-value"></span></div><button id="repeatCene" style="background-color:green;" title="Repeat Cene"><span class="fas fa-refresh fa-2x"></span></button><hr/><label>同步动画</label><hr/><input type="checkbox" class="syncCine"></div>');
+    var rulerLineSize = "<div>线条粗细 : <select id='" + PAPAYA_RULER_LINE_WIDTH + "'><option value='1' selected=selected>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select></div>";
+    var rulerFontSize = "<div>字体大小 : <select id='" + PAPAYA_RULER_FONT_SIZE + "'><option value='14' selected=selected>14</option><option value='16'>16</option><option value='18'>18</option><option value='20'>20</option><option value='25'>25</option></select></div>";
+    var rulerLengthSize = "<div>长度单位 : <select id='" + PAPAYA_RULER_LENGTH_UNIT + "'><option value='mm' selected=selected>毫米</option>" +
+        '<option value = "cm" > 厘米</option >' +
+        '<option value="inches">英寸</option>' +
+        '<option value="feet">尺</option>' +
+        '<option value="micrometer">微米</option>' +
+        '<option value="meter">米</option></select></div>';
 
-    var rulerColor = "<div>Ruler Color : <select id='" + PAPAYA_RULER_COLOR + "'>" +
-        '<option value = "red"> Red</option>' +
-        '<option value = "white" > White</option>' +
-        '<option value="yellow">Yellow</option>' +
-        '<option value="blue">Blue</option>' +
-        '<option value="#FF1493" selected = selected >Pink</option>' +
-        '<option value="green">Green</option>' +
-        '<option value="yellowgreen" >Yellowish Green</option>' +
-        '<option value="maroon">Maroon</option></select></div>';
+    var rulerColor = "<div>颜色 : <select id='" + PAPAYA_RULER_COLOR + "'>" +
+        '<option value = "red"> 红色</option>' +
+        '<option value = "white" > 白色</option>' +
+        '<option value="yellow" selected = selected>黄色</option>' +
+        '<option value="blue">蓝色</option>' +
+        '<option value="#FF1493" >粉色</option>' +
+        '<option value="green">绿色</option>' +
+        '<option value="yellowgreen" >黄绿色</option>' +
+        '<option value="maroon">紫红色</option></select></div>';
 
-    var rulerActiveColor = "<div>Active Ruler Color : <select id='" + PAPAYA_RULER_ACTIVE_COLOR + "'>" +
-        '<option value = "red"> Red</option>' +
-        '<option value = "white" > White</option>' +
-        '<option value="yellow" selected = selected>Yellow</option>' +
-        '<option value="blue">Blue</option>' +
-        '<option value="#FF1493" >Pink</option>' +
-        '<option value="green">Green</option>' +
-        '<option value="yellowgreen" >Yellowish Green</option>' +
-        '<option value="maroon">Maroon</option></select></div>';
 
-    containerHTML.append('<div class="' + PAPAYA_SIDETOOL_CONFIGURATION_CSS + '" style="display:none"><strong>Tool Configuration </strong><hr/>' + rulerLineSize + rulerFontSize + rulerLengthSize + rulerColor + rulerActiveColor + '</div>');
+    var rulerActiveColor = "<div>点击颜色 : <select id='" + PAPAYA_RULER_ACTIVE_COLOR + "'>" +
+        '<option value = "red"> 红色</option>' +
+        '<option value = "white" > 白色</option>' +
+        '<option value="yellow" selected = selected>黄色</option>' +
+        '<option value="blue">蓝色</option>' +
+        '<option value="#FF1493" >粉红色</option>' +
+        '<option value="green">绿色</option>' +
+        '<option value="yellowgreen" >黄绿色</option>' +
+        '<option value="maroon">紫红色</option></select></div>';
+
+
+    containerHTML.append('<div class="' + PAPAYA_SIDETOOL_CONFIGURATION_CSS + '" style="display:none"><strong>工具面板 </strong><hr/>' + rulerLineSize + rulerFontSize + rulerLengthSize + rulerColor + rulerActiveColor + '</div>');
     //  containerHTML.append('<div class="side-description" id="img-description"><div>Image Header </div> <hr /><div id="imageHeader"></div><hr/><div>Image Information</div><hr/><div id="imageInfo"></div></div>');
     // containerHTML.append('<button class="vertical-text"> <span>Show Image Description</span></button>');
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button class='selected' id='" + PAPAYA_SIDENAV_BUTTON_CROSSHAIR + "' title='Crosshair Tool'><span class='fas fa-pen-fancy fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_STACK + "' title='Stack Tool'><span class='fas fa-layer-group fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_WINDOWLEVEL + "' title='Window Level Tool'> <span class='fas fa-qrcode fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_ZOOM + "' title='Zoom Tool'><span class='fas fa-search-plus fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_PAN + "' title='Pan Tool'><span class='fas fa-arrows-alt fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_MAGNIFY + "' title='Magnify Tool'><span class='fas fa-binoculars fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_INVERT + "' title='Invert Tool'><span class='fas fa-adjust fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_PLAYCENE + "' title='Play Clip Tool'><span class='fas fa-play fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_RULER + "' name='drawtool' title='Draw Ruler Tool'><span class='fas fa-pencil-ruler fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_ANGLE + "' name='drawtool' title='Draw Angle Tool'><span class='fas fa-play fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_COBSANGLE + "' name='drawtool' title='Draw Cobs Angle Tool'><span class='fas fa-crop fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_REACTANGLE + "' name='drawtool' title='Draw Reactangle Tool'><span class='fas fa-square fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_ELLIPSE + "' name='drawtool' title='Draw Ellipse Tool'><span class='fas fa-circle fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_PROBE + "' name='drawtool' title='Draw Probe Tool'><span class='fas fa-dot-circle fa-2x'></span></button>");
-    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_RESET + "' title='Reset Tool'><span class='fas fa-redo fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button class='selected' id='" + PAPAYA_SIDENAV_BUTTON_CROSSHAIR + "' title='十字准线'><span class='fas fa-pen-fancy fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_STACK + "' title='图层工具'><span class='fas fa-layer-group fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_WINDOWLEVEL + "' title='窗口工具'> <span class='fas fa-qrcode fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_ZOOM + "' title='放大工具'><span class='fas fa-search-plus fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_PAN + "' title='平移工具'><span class='fas fa-arrows-alt fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_MAGNIFY + "' title='局部放大工具'><span class='fas fa-binoculars fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_INVERT + "' title='切换背景色'><span class='fas fa-adjust fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_PLAYCENE + "' title='播放动画工具'><span class='fas fa-play fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_RULER + "' name='drawtool' title='绘制标尺工具'><span class='fas fa-pencil-ruler fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_ANGLE + "' name='drawtool' title='绘制角度工具'><span class='fas fa-play fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_COBSANGLE + "' name='drawtool' title='绘制虚线角度工具'><span class='fas fa-crop fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_REACTANGLE + "' name='drawtool' title='绘制矩形工具'><span class='fas fa-square fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_ELLIPSE + "' name='drawtool' title='绘制圆形工具'><span class='fas fa-circle fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_PROBE + "' name='drawtool' title='绘制单点工具'><span class='fas fa-dot-circle fa-2x'></span></button>");
+    $("." + PAPAYA_SIDENAVIGATION_CSS).append("<button id='" + PAPAYA_SIDENAV_BUTTON_RESET + "' title='重置'><span class='fas fa-redo fa-2x'></span></button>");
     var viwerTool = new papaya.viewer.Tools();
     viwerTool.ButtonClickEvent();
 };
