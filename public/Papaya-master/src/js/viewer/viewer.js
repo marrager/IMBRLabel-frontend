@@ -102,10 +102,10 @@ papaya.viewer.Viewer = papaya.viewer.Viewer || function (container, width, heigh
         $(container.containerHtml).append('<div id="' + PAPAYA_CROSSHAIR_DIV_SAGITTAL_BLUE + '"></div>');
         $(container.containerHtml).append('<div id="' + PAPAYA_CROSSHAIR_DIV_CORONAL_GREEN + '"></div>');
         $(container.containerHtml).append('<div id="' + PAPAYA_CROSSHAIR_DIV_SURFACE_YELLOW + '"></div>');
-        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_AXIAL_RED + '">Axial</div>');
-        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_SAGITTAL_BLUE + '">Sagittal</div>');
-        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_CORONAL_GREEN + '">Coronal</div>');
-        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_SURFACE_YELLOW + '">Surface</div>');
+        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_AXIAL_RED + '">轴向</div>');
+        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_SAGITTAL_BLUE + '">矢状面</div>');
+        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_CORONAL_GREEN + '">冠状面</div>');
+        $(container.containerHtml).append('<div id="' + PAPAYA_SELECTED_SLICE_DIV_SURFACE_YELLOW + '">表面</div>');
         $(container.containerHtml).append('<div id="' + PAPAYA_MAIN_IMAGE_OVERLAYS_TOP_LEFT + '" class="overlays"></div>');
         $(container.containerHtml).append('<div id="' + PAPAYA_MAIN_IMAGE_OVERLAYS_TOP_RIGHT + '" class="overlays"></div>');
         $(container.containerHtml).append('<div id="' + PAPAYA_MAIN_IMAGE_OVERLAYS_BOTTOM_LEFT + '" class="overlays"></div>');
@@ -1216,22 +1216,22 @@ papaya.viewer.Viewer.prototype.drawEmptyViewer = function () {
     // draw drop text
     this.context.fillStyle = "#AAAAAA";
 
-    if (this.container.readyForDnD()) {
-        fontSize = 18;
-        this.context.font = fontSize + "px sans-serif";
-        locY = this.canvas.height - 22;
-        text = "Drop here or click the File menu";
-        metrics = this.context.measureText(text);
-        textWidth = metrics.width;
-        this.context.fillText(text, (this.canvas.width / 2) - (textWidth / 2), locY);
-    }
+    // if (this.container.readyForDnD()) {
+    //     fontSize = 18;
+    //     this.context.font = fontSize + "px sans-serif";
+    //     locY = this.canvas.height - 22;
+    //     text = "Drop here or click the File menu";
+    //     metrics = this.context.measureText(text);
+    //     textWidth = metrics.width;
+    //     this.context.fillText(text, (this.canvas.width / 2) - (textWidth / 2), locY);
+    // }
 
     if (this.canvas.width > 900) {
         // draw supported formats
         fontSize = 14;
         this.context.font = fontSize + "px sans-serif";
         locY = this.canvas.height - 20;
-        text = "Supported formats: NIFTI" + (papaya.Container.DICOM_SUPPORT ? ", DICOM" : "");
+        text = "支持的格式: NIFTI" + (papaya.Container.DICOM_SUPPORT ? ", DICOM" : "");
         this.context.fillText(text, 20, locY);
 
         // draw Papaya version info
@@ -1239,7 +1239,7 @@ papaya.viewer.Viewer.prototype.drawEmptyViewer = function () {
         this.context.font = fontSize + "px sans-serif";
         locY = this.canvas.height - 20;
 
-        text = "Papaya (Build " + PAPAYA_BUILD_NUM + ")";
+        text = "Created by 医点儿标注队";
         metrics = this.context.measureText(text);
         textWidth = metrics.width;
         this.context.fillText(text, this.canvas.width - textWidth - 20, locY);
@@ -1315,7 +1315,7 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
         this.drawCrosshairs();
     }
 
-    if (this.container.preferences.showRuler === "Yes") {      
+    if (this.container.preferences.showRuler === "Yes") {
         this.Tools.drawToolOnCanvasSlice(PAPAYA_TOOL_RULER, this, this.mainImage);
         this.Tools.drawToolOnCanvasSlice(PAPAYA_TOOL_RULER, this, this.lowerImageTop);
         this.Tools.drawToolOnCanvasSlice(PAPAYA_TOOL_RULER, this, this.lowerImageBot);
@@ -1407,31 +1407,31 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
                 spanCount++;
             }
             var imageLocation;
-            if (this.mainImage.sliceDirection == this.axialSlice.sliceDirection) {
-                imageLocation = '<span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.mainImage.currentSlice + "</span> of " + this.mainImage.sliceCounts;
-            } else if (this.mainImage.sliceDirection == this.coronalSlice.sliceDirection) {
-                imageLocation = '<span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span><span style="width:20px;">' + this.mainImage.currentSlice + "</span> of " + this.mainImage.sliceCounts;;
-            } else {
-                imageLocation = '<span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span><span style="width:20px;">' + this.mainImage.currentSlice + "</span> of " + this.mainImage.sliceCounts;
-            }
-            if (this.surfaceView == null || this.mainImage.sliceDirection != this.surfaceView.sliceDirection) {
-                if (rightBottom[rightBottom.length - 1].innerText == "") {
-                    rightBottom[rightBottom.length - 1].innerHTML = "<div> " + imageLocation + "</div>";
-                } else {
-                    this.mainImageOverlaysBottomRight.append("<div>" + imageLocation + "</div>");;
-                }
-            }
-            if (this.lowerImageTop != this.surfaceView) {
-                this.lowerImageTopOverlayBottomRight.append('<div><span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.lowerImageTop.currentSlice + "</span> of " + this.lowerImageTop.sliceCounts + '</div>');
-            }
-            if (this.lowerImageBot != this.surfaceView) {
-                this.lowerImageBotOverlayBottomRight.append('<div><span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.lowerImageBot.currentSlice + "</span> of " + this.lowerImageBot.sliceCounts + '</div>');
-            }
-            if (this.lowerImageBot2 != null) {
-                if (this.lowerImageBot2 != this.surfaceView) {
-                    this.lowerImageBotTwoOverlayBottomRight.append('<div><span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.lowerImageBot2.currentSlice + "</span> of " + this.lowerImageBot2.sliceCounts + '</div>');
-                }
-            }
+            // if (this.mainImage.sliceDirection == this.axialSlice.sliceDirection) {
+            //     imageLocation = '<span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.mainImage.currentSlice + "</span> of " + this.mainImage.sliceCounts;
+            // } else if (this.mainImage.sliceDirection == this.coronalSlice.sliceDirection) {
+            //     imageLocation = '<span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span><span style="width:20px;">' + this.mainImage.currentSlice + "</span> of " + this.mainImage.sliceCounts;;
+            // } else {
+            //     imageLocation = '<span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span><span style="width:20px;">' + this.mainImage.currentSlice + "</span> of " + this.mainImage.sliceCounts;
+            // }
+            // if (this.surfaceView == null || this.mainImage.sliceDirection != this.surfaceView.sliceDirection) {
+            //     if (rightBottom[rightBottom.length - 1].innerText == "") {
+            //         rightBottom[rightBottom.length - 1].innerHTML = "<div> " + imageLocation + "</div>";
+            //     } else {
+            //         this.mainImageOverlaysBottomRight.append("<div>" + imageLocation + "</div>");;
+            //     }
+            // }
+            // if (this.lowerImageTop != this.surfaceView) {
+            //     this.lowerImageTopOverlayBottomRight.append('<div><span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.lowerImageTop.currentSlice + "</span> of " + this.lowerImageTop.sliceCounts + '</div>');
+            // }
+            // if (this.lowerImageBot != this.surfaceView) {
+            //     this.lowerImageBotOverlayBottomRight.append('<div><span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.lowerImageBot.currentSlice + "</span> of " + this.lowerImageBot.sliceCounts + '</div>');
+            // }
+            // if (this.lowerImageBot2 != null) {
+            //     if (this.lowerImageBot2 != this.surfaceView) {
+            //         this.lowerImageBotTwoOverlayBottomRight.append('<div><span style="color:#B5CBD3">Image Counts </span><span style="color:gray"> : </span> <span style="width:20px;">' + this.lowerImageBot2.currentSlice + "</span> of " + this.lowerImageBot2.sliceCounts + '</div>');
+            //     }
+            // }
         }
         else {
             this.mainImageOverlaysTopLeft.css("display", "none");
@@ -1902,7 +1902,7 @@ papaya.viewer.Viewer.prototype.drawReactangleOnSelectedScreenSlice = function (s
                     this.sagittalSlice.finalTransform[1][1]);
 
             }
-           
+
 
             var color;
 

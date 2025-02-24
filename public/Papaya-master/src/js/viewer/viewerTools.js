@@ -278,7 +278,7 @@ papaya.viewer.Tools.prototype.DrawToolOnMouseMoveEvent = function (viewer, me, t
         cordinate = viewer.convertScreenToImageCoordinate(cordinate.xCord, cordinate.yCord, viewer.selectedSlice);
         var tooldata = viewer.selectedSlice.getImageToolState(toolName).imageDatas;
         var toolHandles = tooldata[imageIndex].toolHandles;
-        
+
         if (toolHandles != undefined) {
             Object.keys(toolHandles).forEach(function (name) {
                 var toolHandle = toolHandles[name];
@@ -693,7 +693,7 @@ papaya.viewer.Tools.prototype.DrawAngleOnImageSlice = function (viewer, me) {
     firstPointSelect = { xCord: cordOne.x, yCord: cordOne.y, zCord: cordOne.z };
 
     var toolImageData = viewer.selectedSlice.getImageToolState('angle');
-    if (toolImageData != undefined && toolImageData.imageDatas != undefined && toolImageData.imageDatas.length > 0) {  
+    if (toolImageData != undefined && toolImageData.imageDatas != undefined && toolImageData.imageDatas.length > 0) {
         var imageToolData = toolImageData.imageDatas;
         if (imageToolData.length != 0) {
             this.selectedIndexAngleOnImage = imageToolData.length - 1;
@@ -728,8 +728,8 @@ papaya.viewer.Tools.prototype.DrawAngleOnImageSlice = function (viewer, me) {
             toolActive: true,
             toolHandles: {
                 start: {
-                    xCord:firstPointSelect.xCord,
-                    yCord:firstPointSelect.yCord,
+                    xCord: firstPointSelect.xCord,
+                    yCord: firstPointSelect.yCord,
                     zCord: firstPointSelect.zCord,
                     toolActive: false
                 },
@@ -749,7 +749,7 @@ papaya.viewer.Tools.prototype.DrawAngleOnImageSlice = function (viewer, me) {
         }
         viewer.selectedSlice.setImageToolState('angle', angelObject);
         toolImageData = viewer.selectedSlice.getImageToolState('angle');
-        if (toolImageData != undefined && toolImageData.imageDatas != undefined && toolImageData.imageDatas.length > 0) {       
+        if (toolImageData != undefined && toolImageData.imageDatas != undefined && toolImageData.imageDatas.length > 0) {
             toolImageData = toolImageData.imageDatas;
         }
         this.selectedIndexAngleOnImage = toolImageData.length - 1;
@@ -883,7 +883,7 @@ papaya.viewer.Tools.prototype.DrawCobsAngleOnImageSlice = function (viewer, me) 
                 viewer.selectedSlice.setImageToolState('cobsangle', cobsAngleObject);
                 toolImageData = viewer.selectedSlice.getImageToolState('cobsangle');
                 if (toolImageData != undefined && toolImageData.imageDatas != undefined && toolImageData.imageDatas.length > 0) {
-                
+
                     toolImageData = toolImageData.imageDatas;
                 }
                 this.selectedIndexCobsAngleOnImage = toolImageData.length - 1;
@@ -1295,37 +1295,37 @@ papaya.viewer.Tools.prototype.getRectAndEllipseUnit = function (unit, area) {
         case "cm":
             textSuffix.area = (area / 100).toFixed(3);
             textSuffix.suffix = ' cm' + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + textSuffix.area + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + textSuffix.area + textSuffix.suffix;
             break;
         case "inches":
             textSuffix.area = (area * 0.001550003100006).toFixed(3);
             textSuffix.suffix = ' in' + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + textSuffix.area + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + textSuffix.area + textSuffix.suffix;
             break;
         case "feet":
             textSuffix.area = (area * 0.00001076391041671).toFixed(3);
             textSuffix.suffix = ' ft' + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + textSuffix.area + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + textSuffix.area + textSuffix.suffix;
             break;
 
         case "micrometer":
             textSuffix.area = (area * 1000000).toFixed(3);
             textSuffix.suffix = ' \xB5' + "m" + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + textSuffix.area + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + textSuffix.area + textSuffix.suffix;
             break;
         case "meter":
             textSuffix.area = (area * 0.000001).toFixed(3);
             textSuffix.suffix = ' m' + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + textSuffix.area + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + textSuffix.area + textSuffix.suffix;
             break;
         case "yd":
             textSuffix.area = (area * 0.000001195990046301).toFixed(3);
             textSuffix.suffix = ' yd' + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + textSuffix.area + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + textSuffix.area + textSuffix.suffix;
             break;
         default:
             textSuffix.suffix = ' mm' + String.fromCharCode(178);
-            textSuffix.areaText = 'Area: ' + (area.toFixed(3)) + textSuffix.suffix;
+            textSuffix.areaText = '面积 ' + (area.toFixed(3)) + textSuffix.suffix;
             break;
     }
     return textSuffix;
@@ -1781,7 +1781,7 @@ papaya.viewer.Tools.prototype.drawToolOnCanvasSlice = function (toolName, viewer
                         viewer.context.strokeStyle = color;
                         viewer.context.fillStyle = color;
 
-                        viewer.context.fillText(text, xText, yText);                       
+                        viewer.context.fillText(text, xText, yText);
                     }
                     break;
                 case PAPAYA_TOOL_RECTANGLE:
@@ -1828,8 +1828,8 @@ papaya.viewer.Tools.prototype.drawEllipseAndRectangleSMD = function (screenSlice
     var pixelData = screenSlice.imageDataDraw.data;
     var byteArray = this.getStoredPixelData(pixelData, viewer.volume, ellipse.left, ellipse.top, ellipse.width, ellipse.height);
     var meanStdDev = this.calculateStanderdMeanDeviation(byteArray, ellipse);
-    var stdDev = "Mean DEV.: " + meanStdDev.stdDev.toFixed(2);
-    var mean = "Mean: " + meanStdDev.mean.toFixed(2);
+    var stdDev = "标准差: " + meanStdDev.stdDev.toFixed(2);
+    var mean = "均值: " + meanStdDev.mean.toFixed(2);
     var area = this.roundToDecimal(Math.PI * (ellipse.width / 2) * (ellipse.height / 2), 2);
 
     var textSuffix = this.getRectAndEllipseUnit(viewer.rulerUnit, area);
