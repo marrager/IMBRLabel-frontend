@@ -39,6 +39,10 @@
     <script type="text/javascript" src="../lib/gl-matrix.js"></script>
     <script type="text/javascript" src="../lib/gifti-reader.js"></script>
     <script type="text/javascript" src="../lib/GLU.js"></script>
+    <!-- 添加pako完整库，用于压缩 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <!-- 添加FileSaver.js库，用于保存文件 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
     <script type="text/javascript" src="../src/js/constants.js"></script>
 
@@ -109,6 +113,715 @@
         // params["atlas"] = ["Talairach_labels_1mm"];
         params['imageTools'] = true;//Remove this or set it false for regular use if set as true tools will be available.
         // params['createSurface'] = true;
+
+        // 添加导出NII.GZ功能
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM已加载，等待Papaya初始化...");
+            
+            // 使用MutationObserver监听Papaya容器的变化
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (document.querySelector('.papaya-toolbar')) {
+                        console.log("Papaya工具栏已加载，添加导出按钮");
+                        observer.disconnect();
+                        addExportButton();
+                    }
+                });
+            });
+            
+            // 开始观察document.body的变化
+            observer.observe(document.body, { childList: true, subtree: true });
+            
+            // 如果5秒后仍未检测到Papaya加载，尝试直接添加按钮
+            setTimeout(function() {
+                if (!document.querySelector('.papaya-toolbar')) {
+                    console.log("超时，尝试直接添加导出按钮");
+                    addExportButton();
+                }
+            }, 5000);
+        });
+        
+        // 添加导出按钮的函数
+        function addExportButton() {
+            // 检查按钮是否已存在
+            if (document.getElementById('papaya-export-button')) {
+                return;
+            }
+            
+            // 创建导出按钮
+            var exportButton = document.createElement('button');
+            exportButton.id = 'papaya-export-button';
+            exportButton.innerHTML = '导出为NII.GZ';
+            exportButton.style.position = 'fixed'; // 使用fixed而不是absolute
+            exportButton.style.top = '10px';
+            exportButton.style.right = '10px';
+            exportButton.style.zIndex = '9999'; // 使用更高的z-index
+            exportButton.style.padding = '8px 12px';
+            exportButton.style.backgroundColor = '#4CAF50';
+            exportButton.style.color = 'white';
+            exportButton.style.border = 'none';
+            exportButton.style.borderRadius = '4px';
+            exportButton.style.cursor = 'pointer';
+            exportButton.style.fontWeight = 'bold';
+            exportButton.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+            
+            exportButton.addEventListener('click', function() {
+                exportCurrentImageAsNiiGz();
+            });
+            
+            // 创建原始导出按钮
+            var originalExportButton = document.createElement('button');
+            originalExportButton.id = 'papaya-original-export-button';
+            originalExportButton.innerHTML = '导出原始文件';
+            originalExportButton.style.position = 'fixed';
+            originalExportButton.style.top = '50px';
+            originalExportButton.style.right = '10px';
+            originalExportButton.style.zIndex = '9999';
+            originalExportButton.style.padding = '8px 12px';
+            originalExportButton.style.backgroundColor = '#2196F3';
+            originalExportButton.style.color = 'white';
+            originalExportButton.style.border = 'none';
+            originalExportButton.style.borderRadius = '4px';
+            originalExportButton.style.cursor = 'pointer';
+            originalExportButton.style.fontWeight = 'bold';
+            originalExportButton.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+            
+            originalExportButton.addEventListener('click', function() {
+                exportOriginalFile();
+            });
+            
+            // 直接添加到body
+            document.body.appendChild(exportButton);
+            document.body.appendChild(originalExportButton);
+            console.log('导出按钮已添加到页面');
+        }
+
+        // 导出当前图像为NII.GZ的函数
+        function exportCurrentImageAsNiiGz() {
+            try {
+                console.log("开始导出过程...");
+                // 检查全局变量
+                console.log("papaya:", papaya);
+                console.log("papayaContainers:", papayaContainers);
+                
+                // 直接访问papayaContainers全局变量
+                if (!papayaContainers || papayaContainers.length === 0) {
+                    alert('Papaya容器未初始化！');
+                    return;
+                }
+                
+                // 获取当前容器
+                var container = papayaContainers[0];
+                console.log("Papaya容器:", container);
+                
+                // 检查viewer和volume
+                if (!container.viewer) {
+                    alert('Papaya查看器未初始化！');
+                    return;
+                }
+                
+                // 获取当前卷
+                var currentVolume = null;
+                
+                // 检查当前选中的卷
+                if (container.viewer.volume) {
+                    currentVolume = container.viewer.volume;
+                    console.log("获取主卷成功");
+                } else if (container.viewer.volumes && container.viewer.volumes.length > 0) {
+                    // 如果有多个卷，使用当前选中的卷
+                    var currentVolumeIndex = container.viewer.currentCoord.z;
+                    currentVolume = container.viewer.volumes[currentVolumeIndex];
+                    console.log("获取当前选中卷成功，索引:", currentVolumeIndex);
+                }
+                
+                if (!currentVolume) {
+                    alert('无法获取当前图像！请先加载一个图像。');
+                    return;
+                }
+                
+                var volume = currentVolume;
+                console.log("成功获取卷:", volume);
+            
+                // 尝试获取原始文件数据
+                var originalFileData = null;
+                
+                // 检查是否有原始文件数据
+                if (volume.fileData) {
+                    console.log("找到原始文件数据");
+                    originalFileData = volume.fileData;
+                } else if (container.viewer.loadedFiles && container.viewer.loadedFiles.length > 0) {
+                    console.log("从loadedFiles获取原始文件数据");
+                    // 尝试从loadedFiles获取原始文件数据
+                    for (var i = 0; i < container.viewer.loadedFiles.length; i++) {
+                        var file = container.viewer.loadedFiles[i];
+                        if (file && file.data) {
+                            originalFileData = file.data;
+                            console.log("从loadedFiles[" + i + "]获取原始文件数据");
+                            break;
+                        }
+                    }
+                }
+                
+                // 如果找到原始文件数据，直接使用它
+                if (originalFileData) {
+                    console.log("使用原始文件数据导出");
+                    
+                    // 检查是否已经是压缩格式
+                    var isCompressed = false;
+                    var fileName = volume.fileName || "exported_image";
+                    
+                    if (fileName.endsWith('.gz') || fileName.endsWith('.nii.gz')) {
+                        isCompressed = true;
+                    }
+                    
+                    if (isCompressed) {
+                        // 如果已经是压缩格式，直接保存
+                        var blob = new Blob([originalFileData], {type: 'application/gzip'});
+                        saveAs(blob, fileName);
+                        alert('导出成功！');
+                        return;
+                    } else {
+                        // 如果是未压缩格式，压缩后保存
+                        var compressedData = pako.gzip(originalFileData);
+                        var blob = new Blob([compressedData], {type: 'application/gzip'});
+                        saveAs(blob, fileName + '.gz');
+                        alert('导出成功！');
+                        return;
+                    }
+                }
+                
+                // 获取NIfTI头信息和数据
+                var header = volume.header;
+                var imageData = volume.imageData;
+                
+                if (!header || !imageData) {
+                    alert('无法获取图像数据！');
+                    return;
+                }
+                
+                // 检查是否有原始文件数据
+                if (volume.fileName) {
+                    console.log("原始文件名:", volume.fileName);
+                }
+                
+                // 检查是否有原始文件URL
+                if (volume.url) {
+                    console.log("原始文件URL:", volume.url);
+                }
+                
+                // 检查图像类型
+                console.log("图像类型:", header.imageType);
+                console.log("头信息:", header);
+                console.log("图像数据:", imageData);
+                
+                // 尝试获取图像维度
+                var dims = getDimensionsFromImageData(imageData, header);
+                console.log("图像维度:", dims);
+                
+                // 尝试获取数据类型
+                var dataType = "未知";
+                if (header.imageType) {
+                    dataType = header.imageType.name;
+                }
+                console.log("图像数据类型:", dataType);
+                
+                // 如果不是NIfTI格式，提示用户
+                if (header.imageType && header.imageType.name !== "NIFTI" && !header.nifti) {
+                    var message = "当前图像不是NIfTI格式（" + header.imageType.name + "），导出可能不准确。";
+                    
+                    // 检查是否有原始文件数据
+                    if (header.rawData && header.rawData.byteLength > 0) {
+                        message += "\n\n检测到原始文件数据，将尝试直接导出原始文件。";
+                    } else {
+                        message += "\n\n将尝试转换为NIfTI格式，但可能会丢失一些信息。";
+                    }
+                    
+                    if (!confirm(message + "\n\n是否继续？")) {
+                        return;
+                    }
+                }
+                
+                // 显示导出进度
+                alert("正在准备导出数据，请稍候...");
+                
+                // 创建NIfTI文件的二进制数据
+                var niftiData = createNiftiBuffer(header, imageData);
+                
+                // 检查数据大小
+                console.log("导出数据大小:", niftiData.byteLength, "字节");
+                
+                // 使用pako压缩数据
+                var compressedData = pako.gzip(niftiData);
+                console.log("压缩后数据大小:", compressedData.byteLength, "字节");
+                
+                // 创建Blob对象
+                var blob = new Blob([compressedData], {type: 'application/gzip'});
+                
+                // 提示用户输入文件名
+                var defaultName = volume.fileName ? 
+                    volume.fileName.replace(/\.[^/.]+$/, "") : 'exported_image';
+                var fileName = prompt('请输入文件名（不包含扩展名）:', defaultName) || defaultName;
+                
+                // 使用FileSaver.js保存文件
+                saveAs(blob, fileName + '.nii.gz');
+                
+                alert('导出成功！');
+            } catch (e) {
+                console.error('导出过程中出错:', e);
+                alert('导出失败: ' + e.message);
+            }
+        }
+        
+        // 创建NIfTI文件的二进制数据
+        function createNiftiBuffer(header, imageData) {
+            // 获取NIfTI头信息
+            var niftiHeader = header.nifti;
+            
+            // 尝试获取原始文件数据（如果存在）
+            if (header.rawData && header.rawData.byteLength > 0) {
+                console.log("使用原始文件数据导出");
+                return header.rawData;
+            }
+            
+            // 检查niftiHeader是否存在
+            if (!niftiHeader) {
+                console.error("NIfTI头信息不存在");
+                
+                // 尝试从header中获取原始数据
+                if (header.rawData) {
+                    console.log("使用header.rawData作为头信息");
+                    var headerSize = 352; // NIfTI-1标准头大小
+                    var dataSize = imageData.data.byteLength;
+                    var buffer = new ArrayBuffer(headerSize + dataSize);
+                    
+                    // 复制头信息
+                    var headerView = new Uint8Array(buffer, 0, headerSize);
+                    var originalHeaderView = new Uint8Array(header.rawData.buffer || header.rawData, 0, headerSize);
+                    
+                    for (var i = 0; i < headerSize; i++) {
+                        headerView[i] = originalHeaderView[i];
+                    }
+                    
+                    // 复制图像数据
+                    var dataView = new Uint8Array(buffer, headerSize);
+                    var originalDataView = new Uint8Array(imageData.data.buffer || imageData.data);
+                    
+                    for (var i = 0; i < dataSize; i++) {
+                        dataView[i] = originalDataView[i];
+                    }
+                    
+                    return buffer;
+                }
+                
+                // 如果没有原始头信息，尝试创建一个基本的NIfTI头
+                console.log("尝试创建基本的NIfTI头信息");
+                
+                // 获取图像维度
+                var dims = getDimensionsFromImageData(imageData, header);
+                console.log("图像维度:", dims);
+                
+                // 创建一个新的NIfTI头
+                var buffer = createBasicNiftiHeader(dims, imageData);
+                if (buffer) {
+                    return buffer;
+                }
+                
+                // 如果无法获取原始头信息，则创建一个基本的NIfTI头
+                throw new Error("无法获取NIfTI头信息，请尝试其他格式导出");
+            }
+            
+            // 创建一个包含头信息和图像数据的ArrayBuffer
+            var headerSize = 352; // NIfTI-1标准头大小
+            var dataSize = imageData.data.byteLength;
+            var buffer = new ArrayBuffer(headerSize + dataSize);
+            
+            // 复制头信息
+            var headerView = new DataView(buffer, 0, headerSize);
+            try {
+                var originalHeaderData = niftiHeader.toArrayBuffer();
+                var originalHeaderView = new DataView(originalHeaderData);
+                
+                for (var i = 0; i < headerSize; i++) {
+                    headerView.setUint8(i, originalHeaderView.getUint8(i));
+                }
+            } catch (e) {
+                console.error("无法获取头信息的ArrayBuffer:", e);
+                
+                // 尝试创建基本的NIfTI头
+                var dims = getDimensionsFromImageData(imageData, header);
+                var newBuffer = createBasicNiftiHeader(dims, imageData);
+                if (newBuffer) {
+                    return newBuffer;
+                }
+                
+                throw new Error("无法处理NIfTI头信息: " + e.message);
+            }
+            
+            // 复制图像数据
+            var dataView = new Uint8Array(buffer, headerSize);
+            
+            // 确保我们正确处理图像数据
+            var originalDataView;
+            if (imageData.data instanceof ArrayBuffer) {
+                originalDataView = new Uint8Array(imageData.data);
+            } else if (imageData.data.buffer) {
+                originalDataView = new Uint8Array(imageData.data.buffer);
+            } else {
+                // 如果是其他类型，尝试转换
+                console.log("图像数据类型:", typeof imageData.data, imageData.data);
+                originalDataView = new Uint8Array(imageData.data);
+            }
+            
+            for (var i = 0; i < dataSize; i++) {
+                dataView[i] = originalDataView[i];
+            }
+            
+            return buffer;
+        }
+        
+        // 从imageData和header中获取维度信息
+        function getDimensionsFromImageData(imageData, header) {
+            console.log("尝试获取图像维度");
+            
+            // 尝试从不同的地方获取维度信息
+            var dims = [];
+            
+            // 1. 尝试从header.imageDimensions获取
+            if (header.imageDimensions) {
+                console.log("从header.imageDimensions获取维度");
+                dims = [
+                    header.imageDimensions.xDim,
+                    header.imageDimensions.yDim,
+                    header.imageDimensions.zDim
+                ];
+                return dims;
+            }
+            
+            // 2. 尝试从imageData.dims获取
+            if (imageData.dims) {
+                console.log("从imageData.dims获取维度");
+                return imageData.dims;
+            }
+            
+            // 3. 尝试从header.dimensions获取
+            if (header.dimensions) {
+                console.log("从header.dimensions获取维度");
+                return header.dimensions;
+            }
+            
+            // 4. 如果都没有，尝试从数据大小推断
+            console.log("尝试从数据大小推断维度");
+            var dataSize = imageData.data.length || imageData.data.byteLength;
+            
+            // 假设是立方体，计算每边的长度
+            var cubeSide = Math.round(Math.pow(dataSize, 1/3));
+            dims = [cubeSide, cubeSide, cubeSide];
+            
+            console.log("推断的维度:", dims);
+            return dims;
+        }
+        
+        // 创建基本的NIfTI头信息
+        function createBasicNiftiHeader(dims, imageData) {
+            try {
+                console.log("创建基本NIfTI头，维度:", dims);
+                
+                // 创建一个包含头信息和图像数据的ArrayBuffer
+                var headerSize = 352; // NIfTI-1标准头大小
+                var dataSize = imageData.data.byteLength;
+                var buffer = new ArrayBuffer(headerSize + dataSize);
+                
+                // 创建头信息视图
+                var header = new DataView(buffer, 0, headerSize);
+                
+                // 设置NIfTI魔术字符串 (offset 344, 4 bytes) - "n+1\0"
+                header.setUint8(344, 110);  // 'n'
+                header.setUint8(345, 43);   // '+'
+                header.setUint8(346, 49);   // '1'
+                header.setUint8(347, 0);    // '\0'
+                
+                // 设置头大小 (offset 0, 4 bytes) - 通常为348
+                header.setInt32(0, 348, true);
+                
+                // 设置数据类型 (offset 70, 2 bytes) - 假设为16位整数
+                header.setInt16(70, 4, true); // DT_INT16
+                
+                // 设置位宽 (offset 72, 2 bytes)
+                header.setInt16(72, 16, true);
+                
+                // 设置维度 (offset 40, 64 bytes)
+                // 第一个值是维度数量
+                header.setInt16(40, dims && dims.length ? dims.length : 3, true);
+                
+                // 设置各个维度的大小
+                if (dims && dims.length) {
+                    for (var i = 0; i < dims.length && i < 7; i++) {
+                        header.setInt16(40 + 2 * (i + 1), dims[i], true);
+                    }
+                } else {
+                    // 如果没有维度信息，设置默认值
+                    header.setInt16(42, 64, true); // x
+                    header.setInt16(44, 64, true); // y
+                    header.setInt16(46, 64, true); // z
+                }
+                
+                // 设置体素大小 (offset 76, 4 bytes)
+                // 设置pixdim[0] = 1 (qfac)
+                header.setFloat32(76, 1.0, true);
+                
+                // 设置pixdim[1-3] (体素尺寸)
+                header.setFloat32(80, 1.0, true); // dx
+                header.setFloat32(84, 1.0, true); // dy
+                header.setFloat32(88, 1.0, true); // dz
+                
+                // 设置pixdim[4-7] (时间步长等)
+                header.setFloat32(92, 1.0, true);
+                header.setFloat32(96, 0.0, true);
+                header.setFloat32(100, 0.0, true);
+                header.setFloat32(104, 0.0, true);
+                
+                // 设置数据偏移量 (offset 108, 4 bytes) - 通常为352
+                header.setFloat32(108, 352, true);
+                
+                // 设置缩放斜率和截距 (offset 112, 8 bytes)
+                header.setFloat32(112, 1.0, true); // scl_slope
+                header.setFloat32(116, 0.0, true); // scl_inter
+                
+                // 设置时间单位和空间单位 (offset 344, 4 bytes)
+                header.setUint8(348, 2); // NIFTI_UNITS_MM (2)
+                
+                // 设置qform_code和sform_code (offset 252, 8 bytes)
+                header.setInt16(252, 1, true); // qform_code = 1 (NIFTI_XFORM_SCANNER_ANAT)
+                header.setInt16(254, 1, true); // sform_code = 1 (NIFTI_XFORM_SCANNER_ANAT)
+                
+                // 设置四元数参数 (offset 256, 16 bytes)
+                header.setFloat32(256, 1.0, true); // quatern_b
+                header.setFloat32(260, 0.0, true); // quatern_c
+                header.setFloat32(264, 0.0, true); // quatern_d
+                header.setFloat32(268, 0.0, true); // qoffset_x
+                header.setFloat32(272, 0.0, true); // qoffset_y
+                header.setFloat32(276, 0.0, true); // qoffset_z
+                
+                // 设置仿射矩阵 (offset 280, 48 bytes)
+                // 第一行
+                header.setFloat32(280, 1.0, true); // srow_x[0]
+                header.setFloat32(284, 0.0, true); // srow_x[1]
+                header.setFloat32(288, 0.0, true); // srow_x[2]
+                header.setFloat32(292, 0.0, true); // srow_x[3]
+                
+                // 第二行
+                header.setFloat32(296, 0.0, true); // srow_y[0]
+                header.setFloat32(300, 1.0, true); // srow_y[1]
+                header.setFloat32(304, 0.0, true); // srow_y[2]
+                header.setFloat32(308, 0.0, true); // srow_y[3]
+                
+                // 第三行
+                header.setFloat32(312, 0.0, true); // srow_z[0]
+                header.setFloat32(316, 0.0, true); // srow_z[1]
+                header.setFloat32(320, 1.0, true); // srow_z[2]
+                header.setFloat32(324, 0.0, true); // srow_z[3]
+                
+                // 复制图像数据
+                var dataView = new Uint8Array(buffer, headerSize);
+                var originalDataView = new Uint8Array(imageData.data.buffer || imageData.data);
+                
+                for (var i = 0; i < dataSize; i++) {
+                    dataView[i] = originalDataView[i];
+                }
+                
+                return buffer;
+            } catch (e) {
+                console.error("创建基本NIfTI头失败:", e);
+                return null;
+            }
+        }
+
+        // 导出原始文件
+        function exportOriginalFile() {
+            try {
+                console.log("开始导出原始文件...");
+                
+                // 直接访问papayaContainers全局变量
+                if (!papayaContainers || papayaContainers.length === 0) {
+                    alert('Papaya容器未初始化！');
+                    return;
+                }
+                
+                // 获取当前容器
+                var container = papayaContainers[0];
+                console.log("容器:", container);
+                
+                // 检查viewer和volume
+                if (!container.viewer) {
+                    alert('Papaya查看器未初始化！');
+                    return;
+                }
+                
+                // 获取当前卷
+                var currentVolume = null;
+                
+                // 检查当前选中的卷
+                if (container.viewer.volume) {
+                    currentVolume = container.viewer.volume;
+                    console.log("获取主卷成功:", currentVolume);
+                } else if (container.viewer.volumes && container.viewer.volumes.length > 0) {
+                    // 如果有多个卷，使用当前选中的卷
+                    var currentVolumeIndex = container.viewer.currentCoord.z;
+                    currentVolume = container.viewer.volumes[currentVolumeIndex];
+                    console.log("获取当前选中卷成功，索引:", currentVolumeIndex);
+                }
+                
+                if (!currentVolume) {
+                    alert('无法获取当前图像！请先加载一个图像。');
+                    return;
+                }
+                
+                var volume = currentVolume;
+                console.log("卷对象:", volume);
+                
+                // 尝试获取原始文件数据
+                var originalFileData = null;
+                var fileName = "exported_image";
+                
+                // 检查所有可能的属性
+                console.log("检查volume对象的所有属性:");
+                for (var prop in volume) {
+                    console.log(prop + ":", volume[prop]);
+                }
+                
+                // 检查viewer对象的所有属性
+                console.log("检查viewer对象的所有属性:");
+                for (var prop in container.viewer) {
+                    console.log(prop + ":", container.viewer[prop]);
+                }
+                
+                // 尝试从currentScreenVolume获取
+                if (container.viewer.currentScreenVolume && container.viewer.currentScreenVolume.volume) {
+                    var screenVol = container.viewer.currentScreenVolume.volume;
+                    console.log("尝试从currentScreenVolume获取:", screenVol);
+                    
+                    if (screenVol.fileData) {
+                        console.log("找到原始文件数据 (screenVol.fileData)");
+                        originalFileData = screenVol.fileData;
+                    } else if (screenVol.rawData) {
+                        console.log("找到原始文件数据 (screenVol.rawData)");
+                        originalFileData = screenVol.rawData;
+                    } else if (screenVol.header && screenVol.header.rawData) {
+                        console.log("找到原始文件数据 (screenVol.header.rawData)");
+                        originalFileData = screenVol.header.rawData;
+                    }
+                    
+                    if (screenVol.fileName) {
+                        fileName = screenVol.fileName;
+                    }
+                }
+                
+                // 检查是否有原始文件数据
+                if (originalFileData) {
+                    console.log("已经找到原始文件数据");
+                } else if (volume.fileData) {
+                    console.log("找到原始文件数据 (volume.fileData)");
+                    originalFileData = volume.fileData;
+                    if (volume.fileName) {
+                        fileName = volume.fileName;
+                    }
+                } else if (volume.rawData) {
+                    console.log("找到原始文件数据 (volume.rawData)");
+                    originalFileData = volume.rawData;
+                    if (volume.fileName) {
+                        fileName = volume.fileName;
+                    }
+                } else if (volume.header && volume.header.rawData) {
+                    console.log("找到原始文件数据 (volume.header.rawData)");
+                    originalFileData = volume.header.rawData;
+                    if (volume.fileName) {
+                        fileName = volume.fileName;
+                    }
+                } else if (container.viewer.loadedFiles && container.viewer.loadedFiles.length > 0) {
+                    // 尝试从loadedFiles获取原始文件数据
+                    for (var i = 0; i < container.viewer.loadedFiles.length; i++) {
+                        var file = container.viewer.loadedFiles[i];
+                        if (file && file.data) {
+                            originalFileData = file.data;
+                            if (file.name) {
+                                fileName = file.name;
+                            }
+                            console.log("从loadedFiles[" + i + "]获取原始文件数据");
+                            break;
+                        }
+                    }
+                } else if (container.viewer.fileName) {
+                    // 如果有文件名，尝试从URL获取
+                    console.log("找到文件名:", container.viewer.fileName);
+                    fileName = container.viewer.fileName;
+                    
+                    // 如果无法获取原始数据，但我们有文件名，尝试使用当前的NIfTI数据
+                    if (volume.header && volume.imageData) {
+                        console.log("使用当前NIfTI数据");
+                        var niftiData = createNiftiBuffer(volume.header, volume.imageData);
+                        originalFileData = niftiData;
+                    }
+                } else if (volume.url) {
+                    // 如果有URL，尝试直接下载
+                    console.log("找到URL:", volume.url);
+                    window.open(volume.url, '_blank');
+                    return;
+                }
+                
+                if (!originalFileData) {
+                    console.log("无法获取原始文件数据，尝试创建NIfTI数据");
+                    
+                    // 如果无法获取原始数据，尝试创建NIfTI数据
+                    if (volume.header && volume.imageData) {
+                        console.log("使用当前NIfTI数据");
+                        originalFileData = createNiftiBuffer(volume.header, volume.imageData);
+                        
+                        // 如果没有文件名，使用默认名称
+                        if (fileName === "exported_image") {
+                            fileName = "exported_image.nii";
+                        }
+                    } else {
+                        alert('无法获取或创建文件数据！');
+                        return;
+                    }
+                }
+                
+                console.log("准备导出文件:", fileName);
+                console.log("文件数据大小:", originalFileData.byteLength, "字节");
+                
+                // 确保文件名有正确的扩展名
+                if (!fileName.endsWith('.nii') && !fileName.endsWith('.nii.gz')) {
+                    // 检查数据是否已经是压缩格式
+                    var isCompressed = false;
+                    
+                    // 尝试检测是否为gzip格式（gzip头部标识为0x1f8b）
+                    if (originalFileData.byteLength > 2) {
+                        var firstBytes = new Uint8Array(originalFileData, 0, 2);
+                        if (firstBytes[0] === 0x1f && firstBytes[1] === 0x8b) {
+                            isCompressed = true;
+                            console.log("检测到gzip格式");
+                        }
+                    }
+                    
+                    if (isCompressed) {
+                        fileName += '.nii.gz';
+                    } else {
+                        fileName += '.nii';
+                    }
+                }
+                
+                // 创建Blob对象
+                var blob = new Blob([originalFileData]);
+                
+                // 使用FileSaver.js保存文件
+                saveAs(blob, fileName);
+                
+                alert('导出成功！');
+            } catch (e) {
+                console.error('导出过程中出错:', e);
+                alert('导出失败: ' + e.message);
+            }
+        }
     </script>
 
     <title>Upload Local Images</title>
