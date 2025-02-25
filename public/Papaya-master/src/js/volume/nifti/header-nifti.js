@@ -472,14 +472,15 @@ papaya.volume.nifti.HeaderNIFTI.prototype.toString = function () {
 
         string += ("<span style='color:#B5CBD3'>Dim Info </span>" + "<span style='color:gray'> = </span>" + this.nifti.dim_info + "<br />");
     } else {
-        string += ("<span style='color:#B5CBD3'>Dim Info</span>" + "<span style='color:gray'> = </span>" + this.nifti.dim_info + "<br />");
+        string += ("<span style='color:#B5CBD3'>维度信息</span>" + "<span style='color:gray'> = </span>" + this.nifti.dim_info + "<br />");
 
-        string += ("<span style='color:#B5CBD3'>Image Dimensions</span>" + " (1-8): " + this.nifti.dims[0] + ", " + this.nifti.dims[1] + ", " +
+        string += ("<span style='color:#B5CBD3'>图像尺寸</span>" + " (1-8): " + this.nifti.dims[0] + ", " + this.nifti.dims[1] + ", " +
             this.nifti.dims[2] + ", " + this.nifti.dims[3] + ", " + this.nifti.dims[4] + ", " + this.nifti.dims[5] + ", " +
             this.nifti.dims[6] + ", " + this.nifti.dims[7] + "<br />");
-        string += ("<span style='color:#B5CBD3'>Intent Parameters</span>" + " (1-3): " + this.nifti.intent_p1 + ", " + this.nifti.intent_p2 + ", " +
+        string += ("<span style='color:#B5CBD3'>参数</span>" + " (1-3): " + this.nifti.intent_p1 + ", " + this.nifti.intent_p2 + ", " +
             this.nifti.intent_p3) + "<br />";
-        string += ("<span style='color:#B5CBD3'>Intent Code</span>" + "<span style='color:gray'> = </span>" + this.nifti.intent_code + "<br />");
+        string += ("<span style='color:#B5CBD3'>代码</span>" + "<span style='color:gray'> = </span>" + this.nifti.intent_code + "<br />");
+
         // string += ("<span style='color:#B5CBD3'>Datatype</span>" + "<span style='color:gray'> = </span>" + this.nifti.datatypeCode + " (" + this.nifti.getDatatypeCodeString(this.nifti.datatypeCode) + ")<br />");
         // string += ("<span style='color:#B5CBD3'>Bits Per Voxel</span>" + "<span style='color:gray'> = </span>" + this.nifti.numBitsPerVoxel + "<br />");
         // string += ("<span style='color:#B5CBD3'>Slice Start</span>" + "<span style='color:gray'> = </span>" + this.nifti.slice_start + "<br />");

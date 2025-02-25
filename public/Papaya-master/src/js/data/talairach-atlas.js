@@ -14,8 +14,8 @@ papaya.data.Atlas.labels = {
     "atlas": {
         "version": "1.0",
         "header": {
-            "name": "Talairach (Nearest Grey Matter)",
-            "transformedname": "MNI (Nearest Grey Matter)",
+            "name": "Talairach (最近灰质)",
+            "transformedname": "MNI (最近灰质)",
             "type": "Label",
             "images": {
                 "summaryimagefile": "Talairach_labels_1mm"

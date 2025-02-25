@@ -35,11 +35,11 @@ papaya.volume.ImageType.MAX_SUPPORTED_BYTES_INTEGER = 4;
 
 papaya.volume.ImageType.prototype.isValid = function () {
     return (
-    (this.datatype <= papaya.volume.ImageType.DATATYPE_RGB) &&
-    (this.datatype > papaya.volume.ImageType.DATATYPE_UNKNOWN) &&
-    (this.numBytes > 0) &&
-    (((this.datatype === papaya.volume.ImageType.DATATYPE_FLOAT) && (this.numBytes <= papaya.volume.ImageType.MAX_SUPPORTED_BYTES_FLOAT)) ||
-    ((this.datatype !== papaya.volume.ImageType.DATATYPE_FLOAT) && (this.numBytes <= papaya.volume.ImageType.MAX_SUPPORTED_BYTES_INTEGER)))
+        (this.datatype <= papaya.volume.ImageType.DATATYPE_RGB) &&
+        (this.datatype > papaya.volume.ImageType.DATATYPE_UNKNOWN) &&
+        (this.numBytes > 0) &&
+        (((this.datatype === papaya.volume.ImageType.DATATYPE_FLOAT) && (this.numBytes <= papaya.volume.ImageType.MAX_SUPPORTED_BYTES_FLOAT)) ||
+            ((this.datatype !== papaya.volume.ImageType.DATATYPE_FLOAT) && (this.numBytes <= papaya.volume.ImageType.MAX_SUPPORTED_BYTES_INTEGER)))
     );
 };
 
