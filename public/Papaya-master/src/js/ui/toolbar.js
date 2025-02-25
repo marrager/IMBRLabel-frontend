@@ -162,133 +162,131 @@ papaya.ui.Toolbar.MENU_DATA_KIOSK = {
 
 papaya.ui.Toolbar.OVERLAY_IMAGE_MENU_DATA = {
     "items": [
-        { "label": "Show Header", "action": "ShowHeader" },
-        { "label": "Show Image Info", "action": "ImageInfo" },
+        { "label": "显示头部信息", "action": "ShowHeader" },
+        { "label": "显示图像信息", "action": "ImageInfo" },
         { "type": "spacer", "required": "isParametricCombined" },
-        { "label": "DisplayRange", "action": "ChangeRange", "type": "displayrange", "method": "getRange" },
-        { "label": "Load Negatives", "action": "LoadNegatives", "required": "canCurrentOverlayLoadNegatives" },
-        { "label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha" },
-        { "label": "Color Table", "action": "ColorTable", "items": [], "required": "isNonParametricCombined" },
+        { "label": "显示范围", "action": "ChangeRange", "type": "displayrange", "method": "getRange" },
+        { "label": "加载负值", "action": "LoadNegatives", "required": "canCurrentOverlayLoadNegatives" },
+        { "label": "透明度", "action": "alpha", "type": "range", "method": "getAlpha" },
+        { "label": "颜色表", "action": "ColorTable", "items": [], "required": "isNonParametricCombined" },
         { "type": "spacer", "required": "isParametricCombined" },
-        { "label": "DisplayRange", "action": "ChangeRangeNeg", "type": "displayrange", "method": "getRangeNegative", "required": "isParametricCombined" },
-        { "label": "Transparency", "action": "alphaneg", "type": "range", "method": "getAlpha", "required": "isParametricCombined" },
+        { "label": "显示范围（负值）", "action": "ChangeRangeNeg", "type": "displayrange", "method": "getRangeNegative", "required": "isParametricCombined" },
+        { "label": "透明度（负值）", "action": "alphaneg", "type": "range", "method": "getAlpha", "required": "isParametricCombined" },
         { "type": "spacer", "required": "isParametricCombined" },
-        { "label": "Hide Overlay", "action": "ToggleOverlay", "method": "getHiddenLabel" },
-        { "label": "Close Overlay", "action": "CloseOverlay", "required": "isDesktopMode" },
-        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
+        { "label": "隐藏叠加图像", "action": "ToggleOverlay", "method": "getHiddenLabel" },
+        { "label": "关闭叠加图像", "action": "CloseOverlay", "required": "isDesktopMode" },
+        { "label": "在Mango中打开", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.BASE_IMAGE_MENU_DATA = {
     "items": [
-        { "label": "Show Header", "action": "ShowHeader" },
-        { "label": "Show Image Info", "action": "ImageInfo" },
-        { "label": "DisplayRange", "action": "ChangeRange", "type": "displayrange", "method": "getRange" },
+        { "label": "显示头部信息", "action": "ShowHeader" },
+        { "label": "显示图像信息", "action": "ImageInfo" },
+        { "label": "显示范围", "action": "ChangeRange", "type": "displayrange", "method": "getRange" },
         papaya.ui.Toolbar.OVERLAY_IMAGE_MENU_DATA.items[6],
         {
-            "label": "Rotation", "action": "Rotation", "items": [
-                { "label": "About X Axis", "action": "rotationX", "type": "range", "method": "getRotationX" },
-                { "label": "About Y Axis", "action": "rotationY", "type": "range", "method": "getRotationY" },
-                { "label": "About Z Axis", "action": "rotationZ", "type": "range", "method": "getRotationZ" },
-                { "label": "Reset Transform", "action": "ResetTransform" },
-                { "label": "Rotate About Center", "action": "Rotate About Center", "type": "radiobutton", "method": "isRotatingAbout" },
-                { "label": "Rotate About Origin", "action": "Rotate About Origin", "type": "radiobutton", "method": "isRotatingAbout" },
-                { "label": "Rotate About Crosshairs", "action": "Rotate About Crosshairs", "type": "radiobutton", "method": "isRotatingAbout" }
+            "label": "旋转", "action": "Rotation", "items": [
+                { "label": "绕X轴旋转", "action": "rotationX", "type": "range", "method": "getRotationX" },
+                { "label": "绕Y轴旋转", "action": "rotationY", "type": "range", "method": "getRotationY" },
+                { "label": "绕Z轴旋转", "action": "rotationZ", "type": "range", "method": "getRotationZ" },
+                { "label": "重置变换", "action": "ResetTransform" },
+                { "label": "绕中心旋转", "action": "Rotate About Center", "type": "radiobutton", "method": "isRotatingAbout" },
+                { "label": "绕原点旋转", "action": "Rotate About Origin", "type": "radiobutton", "method": "isRotatingAbout" },
+                { "label": "绕十字线旋转", "action": "Rotate About Crosshairs", "type": "radiobutton", "method": "isRotatingAbout" }
             ]
         },
-        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
+        { "label": "在Mango中打开", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.RGB_IMAGE_MENU_DATA = {
     "items": [
-        { "label": "Show Header", "action": "ShowHeader" },
-        { "label": "Show Image Info", "action": "ImageInfo" },
-        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
+        { "label": "显示头部信息", "action": "ShowHeader" },
+        { "label": "显示图像信息", "action": "ImageInfo" },
+        { "label": "在Mango中打开", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.SURFACE_MENU_DATA = {
     "items": [
-        { "label": "Show Surface Info", "action": "SurfaceInfo" },
-        { "label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha" }
+        { "label": "显示表面信息", "action": "SurfaceInfo" },
+        { "label": "透明度", "action": "alpha", "type": "range", "method": "getAlpha" }
     ]
 };
 
 papaya.ui.Toolbar.DTI_IMAGE_MENU_DATA = {
     "items": [
-        { "label": "Show Header", "action": "ShowHeader" },
-        { "label": "Show Image Info", "action": "ImageInfo" },
-        { "label": "Display Colors", "action": "DTI-RGB", "type": "checkbox", "method": "isDTIRGB" },
-        { "label": "Display Lines", "action": "DTI-Lines", "type": "checkbox", "method": "isDTILines" },
-        { "label": "Display Lines &amp; Colors", "action": "DTI-LinesColors", "type": "checkbox", "method": "isDTILinesAndRGB" },
-        { "label": "Transparency", "action": "alpha", "type": "range", "method": "getAlpha", "required": "canCurrentOverlayLoadMod" },
-        { "label": "Modulate with...", "action": "DTI-Mod", "type": "file", "hide": papaya.utilities.PlatformUtils.ios, "required": "canCurrentOverlayLoadMod" },
-        { "label": "Modulation", "action": "dtiAlphaFactor", "type": "range", "method": "getDtiAlphaFactor", "required": "canCurrentOverlayModulate" },
-        { "label": "Open in Mango", "action": "OpenInMango", "required": "canOpenInMango" }
+        { "label": "显示颜色", "action": "DTI-RGB", "type": "checkbox", "method": "isDTIRGB" },
+        { "label": "显示线条", "action": "DTI-Lines", "type": "checkbox", "method": "isDTILines" },
+        { "label": "显示线条和颜色", "action": "DTI-LinesColors", "type": "checkbox", "method": "isDTILinesAndRGB" },
+        { "label": "透明度", "action": "alpha", "type": "range", "method": "getDtiAlphaFactor", "required": "canCurrentOverlayModulate" },
+        { "label": "调制为...", "action": "DTI-Mod", "type": "file", "hide": papaya.utilities.PlatformUtils.ios, "required": "canCurrentOverlayModulate" },
+        { "label": "调制", "action": "dtiAlphaFactor", "type": "range", "method": "getDtiAlphaFactor", "required": "canCurrentOverlayModulate" },
+        { "label": "在Mango中打开", "action": "OpenInMango", "required": "canOpenInMango" }
     ]
 };
 
 papaya.ui.Toolbar.PREFERENCES_DATA = {
     "items": [
-        { "label": "Coordinate display of:", "field": "atlasLocks", "options": ["Mouse", "Crosshairs"] },
+        { "label": "坐标显示为：", "field": "atlasLocks", "options": ["鼠标", "十字线"] },
         {
-            "label": "Scroll wheel behavior:", "field": "scrollBehavior", "options": ["Zoom", "Increment Slice"],
+            "label": "滚轮滑动行为：", "field": "scrollBehavior", "options": ["缩放", "逐片翻动"],
             "disabled": "container.disableScrollWheel"
         },
         { "spacer": "true" },
-        { "label": "Smooth display:", "field": "smoothDisplay", "options": ["Yes", "No"] },
-        { "label": "Radiological display:", "field": "radiological", "options": ["Yes", "No"] }
+        { "label": "平滑显示：", "field": "smoothDisplay", "options": ["是", "否"] },
+        { "label": "放射学显示：", "field": "radiological", "options": ["是", "否"] }
     ]
 };
 
 papaya.ui.Toolbar.PREFERENCES_SURFACE_DATA = {
     "items": [
-        { "label": "Background color:", "field": "surfaceBackgroundColor", "options": ["Black", "Dark Gray", "Gray", "Light Gray", "White"] }
+        { "label": "背景颜色：", "field": "surfaceBackgroundColor", "options": ["黑色", "深灰色", "灰色", "浅灰色", "白色"] }
     ]
 };
 
 papaya.ui.Toolbar.IMAGE_INFO_DATA = {
     "items": [
-        { "label": "Filename:", "field": "getFilename", "readonly": "true" },
+        { "label": "文件名：", "field": "getFilename", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Image Dims:", "field": "getImageDimensionsDescription", "readonly": "true" },
-        { "label": "Voxel Dims:", "field": "getVoxelDimensionsDescription", "readonly": "true" },
+        { "label": "图像尺寸：", "field": "getImageDimensionsDescription", "readonly": "true" },
+        { "label": "体素尺寸：", "field": "getVoxelDimensionsDescription", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Byte Type:", "field": "getByteTypeDescription", "readonly": "true" },
-        { "label": "Byte Order:", "field": "getByteOrderDescription", "readonly": "true" },
+        { "label": "字节类型：", "field": "getByteTypeDescription", "readonly": "true" },
+        { "label": "字节顺序：", "field": "getByteOrderDescription", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Orientation:", "field": "getOrientationDescription", "readonly": "true" },
+        { "label": "方向：", "field": "getOrientationDescription", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Notes:", "field": "getImageDescription", "readonly": "true" }
+        { "label": "备注：", "field": "getImageDescription", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.SERIES_INFO_DATA = {
     "items": [
-        { "label": "Filename:", "field": "getFilename", "readonly": "true" },
-        { "label": "File Length:", "field": "getFileLength", "readonly": "true" },
+        { "label": "文件名：", "field": "getFilename", "readonly": "true" },
+        { "label": "文件长度：", "field": "getFileLength", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Image Dims:", "field": "getImageDimensionsDescription", "readonly": "true" },
-        { "label": "Voxel Dims:", "field": "getVoxelDimensionsDescription", "readonly": "true" },
-        { "label": "Series Points:", "field": "getSeriesDimensionsDescription", "readonly": "true" },
-        { "label": "Series Point Size:", "field": "getSeriesSizeDescription", "readonly": "true" },
+        { "label": "图像尺寸：", "field": "getImageDimensionsDescription", "readonly": "true" },
+        { "label": "体素尺寸：", "field": "getVoxelDimensionsDescription", "readonly": "true" },
+        { "label": "系列点数：", "field": "getSeriesDimensionsDescription", "readonly": "true" },
+        { "label": "系列点大小：", "field": "getSeriesSizeDescription", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Byte Type:", "field": "getByteTypeDescription", "readonly": "true" },
-        { "label": "Byte Order:", "field": "getByteOrderDescription", "readonly": "true" },
-        { "label": "Compressed:", "field": "getCompressedDescription", "readonly": "true" },
+        { "label": "字节类型：", "field": "getByteTypeDescription", "readonly": "true" },
+        { "label": "字节顺序：", "field": "getByteOrderDescription", "readonly": "true" },
+        { "label": "压缩：", "field": "getCompressedDescription", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Orientation:", "field": "getOrientationDescription", "readonly": "true" },
-        { "label": "Notes:", "field": "getImageDescription", "readonly": "true" }
+        { "label": "方向：", "field": "getOrientationDescription", "readonly": "true" },
+        { "label": "备注：", "field": "getImageDescription", "readonly": "true" }
     ]
 };
 
 papaya.ui.Toolbar.SURFACE_INFO_DATA = {
     "items": [
-        { "label": "Filename:", "field": "getSurfaceFilename", "readonly": "true" },
+        { "label": "文件名：", "field": "getSurfaceFilename", "readonly": "true" },
         { "spacer": "true" },
-        { "label": "Points:", "field": "getSurfaceNumPoints", "readonly": "true" },
-        { "label": "Triangles:", "field": "getSurfaceNumTriangles", "readonly": "true" }
+        { "label": "点数：", "field": "getSurfaceNumPoints", "readonly": "true" },
+        { "label": "三角形数：", "field": "getSurfaceNumTriangles", "readonly": "true" }
     ]
 };
 
@@ -780,7 +778,8 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
             this.viewer.screenVolumes[imageIndex].changeColorTable(this.viewer, colorTableName);
             this.updateImageButtons();
         } else if (action.startsWith("CloseAllImages")) {
-            papaya.Container.resetViewer(this.container.containerIndex, {});
+            // papaya.Container.resetViewer(this.container.containerIndex, {});
+            location.reload();
         } else if (action === "Preferences") {
             dialog = new papaya.ui.Dialog(this.container, "Viewer Preferences", papaya.ui.Toolbar.PREFERENCES_DATA,
                 this.container.preferences, papaya.utilities.ObjectUtils.bind(this.container.preferences,
